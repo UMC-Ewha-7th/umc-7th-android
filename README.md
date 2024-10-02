@@ -1,2 +1,2 @@
 # umc-7th-android
-🤖 7th UMC Ewha Android Repository
+깃허브 테스트
