@@ -22,4 +22,5 @@
     <string name="mail_box">우편함</string>
     <string name="fragment_calendar_intro">캘린더 프래그먼트입니다.</string>
     <string name="fragment_mypage_intro">마이페이지 프래그먼트입니다.</string>
+    <string name="splash_icon">스플래시 아이콘</string>
 </resources>
