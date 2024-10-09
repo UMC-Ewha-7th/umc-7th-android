@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Umc-Android-Mission</string>
+    <string name="app_name">TO YOU</string>
     <string name="back_button">뒤로가기</string>
     <string name="main_title">오늘 하루는 어땠나요?</string>
     <string name="sub_title">감정 우표를 선택해주세요</string>
@@ -10,4 +10,16 @@
     <string name="green_stamp">생각이 많아지고 불안해요</string>
     <string name="red_stamp">부글부글 화가 나요</string>
     <string name="next_activity_text">화면 전환 성공!</string>
+    <string name="nav_home">home</string>
+    <string name="nav_edit">edit</string>
+    <string name="nav_calendar">calendar</string>
+    <string name="nav_mypage">mypage</string>
+    <string name="app_name_kor">투유</string>
+    <string name="bell_fill">알람이 울린 아이콘</string>
+    <string name="date">날짜</string>
+    <string name="home_description">멘트</string>
+    <string name="speech_balloon">말풍선</string>
+    <string name="mail_box">우편함</string>
+    <string name="fragment_calendar_intro">캘린더 프래그먼트입니다.</string>
+    <string name="fragment_mypage_intro">마이페이지 프래그먼트입니다.</string>
 </resources>
