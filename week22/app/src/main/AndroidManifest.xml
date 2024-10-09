@@ -13,12 +13,12 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
-            android:name=".splashActivity"
-            android:exported="trueum" />
-        <activity
             android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".splashActivity"
             android:exported="true"
-            android:label="@string/app_name">
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
