@@ -7,6 +7,7 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 
 class SplashActivity : AppCompatActivity() {
+    private val DELAY_TIME: Long = 2000
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
@@ -18,11 +19,11 @@ class SplashActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
 
-            // 이전 키를 눌렀을 때 스플래스 스크린 화면으로 이동을 방지하기 위해
-            // 이동한 다음 사용안함으로 finish 처리
+            // 이전 키를 눌렀을 때 스플래시 스크린 화면으로 이동을 방지하기 위해
+            // 이동한 다음 사용 안 함으로 finish 처리
             finish()
 
-        }, 2000) // 시간 2초 이후 실행
+        }, DELAY_TIME)
 
     }
 }

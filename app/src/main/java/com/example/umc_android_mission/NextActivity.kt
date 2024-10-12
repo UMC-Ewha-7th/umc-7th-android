@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.umc_android_mission.databinding.ActivityNextBinding
 
-class NextActivity: AppCompatActivity() {
+class NextActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNextBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

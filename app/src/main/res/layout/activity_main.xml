@@ -7,9 +7,9 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container"
+        android:name="com.example.umc_android_mission.ui.HomeFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.example.umc_android_mission.ui.HomeFragment"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

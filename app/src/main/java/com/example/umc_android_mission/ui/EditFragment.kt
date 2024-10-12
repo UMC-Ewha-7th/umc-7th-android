@@ -9,7 +9,7 @@ import com.example.umc_android_mission.R
 import com.example.umc_android_mission.databinding.FragmentEditBinding
 
 class EditFragment : Fragment(R.layout.fragment_edit) {
-    private var _binding : FragmentEditBinding? = null
+    private var _binding: FragmentEditBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(

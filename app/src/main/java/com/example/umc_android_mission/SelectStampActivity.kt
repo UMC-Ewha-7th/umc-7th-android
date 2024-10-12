@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.umc_android_mission.databinding.ActivitySelectStampBinding
 
-class SelectStampActivity: AppCompatActivity() {
+class SelectStampActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySelectStampBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

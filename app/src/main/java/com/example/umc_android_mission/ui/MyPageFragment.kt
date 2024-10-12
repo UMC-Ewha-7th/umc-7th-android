@@ -9,7 +9,7 @@ import com.example.umc_android_mission.R
 import com.example.umc_android_mission.databinding.FragmentMypageBinding
 
 class MyPageFragment : Fragment(R.layout.fragment_mypage) {
-    private var _binding : FragmentMypageBinding? = null
+    private var _binding: FragmentMypageBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
