@@ -19,6 +19,10 @@ dependencyResolutionManagement {
     }
 }
 
+<<<<<<< HEAD
 rootProject.name = "week2_bottomtabnav"
+=======
+rootProject.name = "week4_threadcoroutine"
+>>>>>>> e27f52b ([week4] Thread & Coroutine 제이미)
 include(":app")
  
