@@ -4,12 +4,13 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.timer.databinding.ActivityMainBinding
+import kotlinx.coroutines.*
 import java.util.Locale
-import kotlin.text.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private var timer: Timer? = null
+    private var timerJob: Job? = null
+    private var seconds = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,46 +38,32 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Timer class
-    inner class Timer : Thread() {
-        var isRunning = true
-        private var seconds = 0
-
-        override fun run() {
-            while (isRunning) {
-                try {
-                    sleep(10) // 0.01초 단위
-                    seconds++
-                    // UI 업데이트 (메인 스레드에서 업데이트 해줘야 함)
-                    runOnUiThread {
-                        val min = seconds / 6000
-                        val sec = seconds / 100 % 60
-                        val msec = seconds % 100
-                        binding.tvTime.text = String.format(Locale.getDefault(), "%02d:%02d,%02d", min, sec, msec)
-                    }
-                } catch (e: InterruptedException) {
-                    e.printStackTrace()
+    private fun startTimer() {
+        timerJob = CoroutineScope(Dispatchers.Default).launch { // 백그라운드에서 작업하도록 설정
+            while (isActive) { // 타이머 코루틴이 액티브 되어있을 경우 타이머 시간 증가
+                delay(10) // 0.01초 단위
+                seconds++
+                withContext(Dispatchers.Main) { // 메인 스레드에서 UI 업데이트
+                    updateTimerUI()
                 }
             }
         }
-
-        fun resetTimer() {
-            isRunning = false
-            seconds = 0
-        }
-    }
-
-    private fun startTimer() {
-        timer = Timer()
-        timer?.start()
     }
 
     private fun stopTimer() {
-        timer?.isRunning = false
+        timerJob?.cancel()
     }
 
     private fun resetTimer() {
-        timer?.resetTimer()
-        timer = null
+        stopTimer()
+        seconds = 0
+        updateTimerUI()
+    }
+
+    private fun updateTimerUI() {
+        val min = seconds / 6000
+        val sec = seconds / 100 % 60
+        val msec = seconds % 100
+        binding.tvTime.text = String.format(Locale.getDefault(), "%02d:%02d,%02d", min, sec, msec)
     }
 }
