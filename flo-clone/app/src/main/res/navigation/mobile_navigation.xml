@@ -9,17 +9,45 @@
         android:id="@+id/navigation_home"
         android:name="com.example.flo_clone.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_dashboard"
+            app:destination="@id/navigation_look" />
+    </fragment>
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.flo_clone.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_look"
+        android:name="com.example.flo_clone.ui.look.LookFragment"
+        android:label="@string/title_look"
+        tools:layout="@layout/fragment_look" >
+        <action
+            android:id="@+id/action_navigation_look_to_navigation_search"
+            app:destination="@id/navigation_search" />
+        <action
+            android:id="@+id/action_navigation_look_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.flo_clone.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_search"
+        android:name="com.example.flo_clone.ui.search.SearchFragment"
+        android:label="@string/title_search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_navigation_search_to_navigation_locker"
+            app:destination="@id/navigation_locker" />
+        <action
+            android:id="@+id/action_navigation_search_to_navigation_look"
+            app:destination="@id/navigation_look" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_locker"
+        android:name="com.example.flo_clone.ui.locker.LockerFragment"
+        android:label="@string/title_locker"
+        tools:layout="@layout/fragment_locker" >
+        <action
+            android:id="@+id/action_navigation_locker_to_navigation_search"
+            app:destination="@id/navigation_search" />
+    </fragment>
 </navigation>
