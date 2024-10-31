@@ -23,6 +23,13 @@ class AlbumFragment : Fragment() {
     ): View? {
         binding = FragmentAlbumBinding.inflate(inflater, container, false)
 
+        if (arguments != null && arguments?.getString("title") != null && arguments?.getString("singer") != null) {
+            val title = arguments!!.getString("title")
+            val singer = arguments!!.getString("singer")
+            binding.albumMusicTitleTv.text = title
+            binding.albumSingerNameTv.text = singer
+        }
+
         binding.albumBackIv.setOnClickListener {
             (context as MainActivity)
                 .supportFragmentManager

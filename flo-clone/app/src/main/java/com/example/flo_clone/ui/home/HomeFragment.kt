@@ -22,10 +22,15 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         binding.homeAlbumImgIv1.setOnClickListener {
+            var albumFragment = AlbumFragment()
+            albumFragment.arguments = Bundle().apply {
+                putString("title", binding.homeAlbumTitleTv1.text.toString())
+                putString("singer", binding.homeAlbumSingerTv1.text.toString())
+            }
             (context as MainActivity)
                 .supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main, AlbumFragment())
+                .replace(R.id.nav_host_fragment_activity_main, albumFragment)
                 .commitAllowingStateLoss()
         }
 

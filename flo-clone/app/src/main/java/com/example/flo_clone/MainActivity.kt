@@ -2,6 +2,9 @@ package com.example.flo_clone
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
@@ -11,6 +14,13 @@ import com.example.flo_clone.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val data: Intent? = result.data
+            Toast.makeText(this, data?.getStringExtra("title"), Toast.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,9 +34,14 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         navView.setupWithNavController(navController)
 
+        val song = Song(binding.mainMiniplayerTitleTv.text.toString(), binding.mainMiniplayerSingerTv.text.toString())
+
         // main_player_cl 눌렀을 때 SongActivity로 전환 리스너 설정
         binding.mainPlayerCl.setOnClickListener {
-            startActivity(Intent(this, SongActivity::class.java))
+            val intent = Intent(this, SongActivity::class.java)
+            intent.putExtra("title", song.title)
+            intent.putExtra("singer", song.singer)
+            startForResult.launch(intent)
         }
     }
 }
