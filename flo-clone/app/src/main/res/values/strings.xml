@@ -61,12 +61,40 @@
     <string name="song_album_iv">앨범 이미지</string>
     <string name="song_music_lyrics1">나라는 꽃가루에</string>
     <string name="song_music_lyrics2">눈이 따끔해 아야</string>
-    <string name="song_like_iv">좋아요 버튼</string>
-    <string name="song_unlike_iv">싫어요 버튼</string>
+    <string name="song_like_iv">곡 좋아요 버튼</string>
+    <string name="song_unlike_iv">곡 싫어요 버튼</string>
     <string name="song_start_time_tv">00:00</string>
     <string name="song_end_time_tv">01:00</string>
-    <string name="song_repeat_iv">반복 버튼</string>
-    <string name="song_random_iv">랜덤 버튼</string>
-    <string name="song_related_iv">관련곡 버튼</string>
+    <string name="song_repeat_iv">곡 반복 버튼</string>
+    <string name="song_random_iv">곡 랜덤 버튼</string>
+    <string name="song_related_iv">연관곡 버튼</string>
+
+    <string name="album_like_iv">앨범 좋아요 버튼</string>
+    <string name="album_more_iv">앨범 더보기 버튼</string>
+    <string name="album_back_iv">뒤로가기 버튼</string>
+    <string name="album_music_title_tv">IU 5th Album \'LILAC\'</string>
+    <string name="album_music_title_info_tv">2021.03.25 | 정규 | 댄스 팝</string>
+    <string name="album_album_iv">앨범 이미지</string>
+    <string name="album_lp_iv">LP 이미지</string>
+    <string name="song_mix_tv">내 취향 MIX</string>
+
+    <string name="song_mixoff_tg">내 취향 MIX OFF 버튼</string>
+    <string name="song_mixon_tg">내 취향 MIX ON 버튼</string>
+    <string name="song_all_select">전체선택</string>
+    <string name="song_all_listen">전체 듣기</string>
+    <string name="song_list_order_1">01</string>
+    <string name="song_list_title_1">TITLE</string>
+    <string name="song_music_title_1">라일락</string>
+    <string name="song_singer_name">가수</string>
+    <string name="song_list_order_02">02</string>
+    <string name="song_music_title2">Flu</string>
+    <string name="song_list_order_3">03</string>
+    <string name="song_music_title_3">Coin</string>
+    <string name="song_list_order_4">04</string>
+    <string name="song_music_title_4">봄 안녕 봄</string>
+    <string name="song_list_order_5">05</string>
+    <string name="song_music_title_5">Celebrity</string>
+    <string name="song_list_order_6">06</string>
+    <string name="song_music_title_6">돌림노래 (Feat. DEAN)</string>
 
 </resources>

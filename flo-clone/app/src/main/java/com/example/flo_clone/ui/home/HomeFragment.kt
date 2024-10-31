@@ -5,32 +5,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import com.example.flo_clone.MainActivity
+import com.example.flo_clone.R
 import com.example.flo_clone.databinding.FragmentHomeBinding
+import com.example.flo_clone.ui.album.AlbumFragment
 
 class HomeFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentHomeBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this)[HomeViewModel::class.java]
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-        return root
-    }
+        binding.homeAlbumImgIv1.setOnClickListener {
+            (context as MainActivity)
+                .supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.nav_host_fragment_activity_main, AlbumFragment())
+                .commitAllowingStateLoss()
+        }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        return binding.root
     }
 }

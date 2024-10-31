@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.flo_clone.databinding.ActivityMainBinding
-import com.example.flo_clone.ui.song.SongActivity
 
 class MainActivity : AppCompatActivity() {
 

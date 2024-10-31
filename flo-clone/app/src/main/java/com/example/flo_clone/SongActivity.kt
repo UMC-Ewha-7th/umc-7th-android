@@ -1,4 +1,4 @@
-package com.example.flo_clone.ui.song
+package com.example.flo_clone
 
 import android.os.Bundle
 import android.view.View
