@@ -33,7 +33,8 @@ class MainActivity : AppCompatActivity() {
 
         val song = Song(
             binding.mainMiniplayerTitleTv.text.toString(),
-            binding.mainMiniplayerSingerTv.text.toString()
+            binding.mainMiniplayerSingerTv.text.toString(),
+            0, 60, false
         )
 
         // main_player_cl 눌렀을 때 SongActivity로 전환 리스너 설정
@@ -41,6 +42,9 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, SongActivity::class.java)
             intent.putExtra("title", song.title)
             intent.putExtra("singer", song.singer)
+            intent.putExtra("second", song.second)
+            intent.putExtra("playTime", song.playTime)
+            intent.putExtra("isPlaying", song.isPlaying)
             startForResult.launch(intent)
         }
     }
