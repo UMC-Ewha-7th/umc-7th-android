@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.flo_clone.databinding.FragmentBannerBinding
 
-class BannerFragment() : Fragment() {
+class BannerFragment(private val imgRes: Int) : Fragment() {
     private lateinit var binding: FragmentBannerBinding
 
     override fun onCreateView(
@@ -16,6 +16,8 @@ class BannerFragment() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentBannerBinding.inflate(inflater, container, false)
+
+        binding.bannerImageIv.setImageResource(imgRes)
 
         return binding.root
     }
