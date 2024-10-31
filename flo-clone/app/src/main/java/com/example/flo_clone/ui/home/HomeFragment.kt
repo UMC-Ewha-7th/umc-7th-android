@@ -34,6 +34,8 @@ class HomeFragment : Fragment() {
                 .commitAllowingStateLoss()
         }
 
+        binding.homeBannerVp.adapter = BannerViewPagerAdapter(this)
+
         return binding.root
     }
 }
