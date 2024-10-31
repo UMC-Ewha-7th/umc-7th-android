@@ -4,4 +4,15 @@
     <string name="title_look">둘러보기</string>
     <string name="title_search">검색</string>
     <string name="title_locker">보관함</string>
+
+    <string name="home_panel_background_iv">홈 배경 이미지</string>
+    <string name="home_panel_btn_mike_iv">음성 검색 버튼</string>
+    <string name="home_panel_btn_ticket_iv">티켓 버튼</string>
+    <string name="home_panel_btn_setting_iv">설정 버튼</string>
+    <string name="home_panel_title_tv">포근하게 덮어주는 꿈의\n목소리</string>
+    <string name="home_panel_btn_play_iv">재생 버튼</string>
+    <string name="home_panel_album_info_tv">총 36곡 2020.06.05</string>
+    <string name="home_panel_album_img_iv">앨범 이미지</string>
+    <string name="home_panel_album_title_tv">In My Bed</string>
+    <string name="home_panel_album_singer_tv">bear</string>
 </resources>
