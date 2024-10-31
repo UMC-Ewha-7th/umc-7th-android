@@ -97,4 +97,7 @@
     <string name="song_list_order_6">06</string>
     <string name="song_music_title_6">돌림노래 (Feat. DEAN)</string>
 
+    <string name="locker_title_tv">보관함</string>
+    <string name="saved_no_music_tv">저장한 곡이 없습니다.</string>
+
 </resources>

@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.flo_clone.databinding.ActivityMainBinding
 import com.example.flo_clone.ui.home.HomeFragment
+import com.example.flo_clone.ui.locker.LockerFragment
 import com.example.flo_clone.ui.look.LookFragment
 import com.example.flo_clone.ui.search.SearchFragment
 
@@ -74,7 +75,7 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.navigation_locker -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.nav_host_fragment_activity_main, LookFragment())
+                        .replace(R.id.nav_host_fragment_activity_main, LockerFragment())
                         .commitAllowingStateLoss()
                     true
                 }

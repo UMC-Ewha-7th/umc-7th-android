@@ -4,39 +4,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.example.flo_clone.databinding.FragmentLockerBinding
+import com.google.android.material.tabs.TabLayoutMediator
 
 class LockerFragment : Fragment() {
-
-    private var _binding: FragmentLockerBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentLockerBinding
+    private val tabs = listOf("저장한 곡", "음악파일")
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val lockerViewModel =
-            ViewModelProvider(this)[LockerViewModel::class.java]
+        binding = FragmentLockerBinding.inflate(inflater, container, false)
 
-        _binding = FragmentLockerBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        binding.lockerContentVp.adapter = LockerViewPagerAdapter(this)
+        TabLayoutMediator(binding.lockerContentTb, binding.lockerContentVp) { tab, position ->
+            tab.text = tabs[position]
+        }.attach()
 
-        val textView: TextView = binding.textLocker
-        lockerViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-        return root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        return binding.root
     }
 }
