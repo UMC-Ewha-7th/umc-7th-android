@@ -53,4 +53,20 @@
     <string name="home_btn_sns_youtube_iv">유튜브 공유 버튼</string>
     <string name="home_ceo_info_tv">(주)드림어스컴퍼니 사업자 정보</string>
 
+    <string name="song_setting_ib">설정 버튼</string>
+    <string name="song_eq_ib">이퀄라이저 버튼</string>
+    <string name="song_down_ib">창 내리기 버튼</string>
+    <string name="song_more_ib">더보기 버튼</string>
+    <string name="song_singer_more_iv">아티스트 더보기 버튼</string>
+    <string name="song_album_iv">앨범 이미지</string>
+    <string name="song_music_lyrics1">나라는 꽃가루에</string>
+    <string name="song_music_lyrics2">눈이 따끔해 아야</string>
+    <string name="song_like_iv">좋아요 버튼</string>
+    <string name="song_unlike_iv">싫어요 버튼</string>
+    <string name="song_start_time_tv">00:00</string>
+    <string name="song_end_time_tv">01:00</string>
+    <string name="song_repeat_iv">반복 버튼</string>
+    <string name="song_random_iv">랜덤 버튼</string>
+    <string name="song_related_iv">관련곡 버튼</string>
+
 </resources>
