@@ -7,33 +7,31 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.TextView
+import com.example.myapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var textTimer: TextView
-    private lateinit var buttonStart: Button
-    private lateinit var buttonPause: Button
-    private lateinit var buttonStop: Button
+
+    private lateinit var binding: ActivityMainBinding
 
     var total = 0
     var started = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        textTimer = findViewById(R.id.textTimer)
-        buttonStart = findViewById(R.id.buttonStart)
-        buttonPause = findViewById(R.id.buttonPause)
-        buttonStop = findViewById(R.id.buttonStop)
 
-        buttonStart.setOnClickListener {
+        super.onCreate(savedInstanceState)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.buttonStart.setOnClickListener {
             start()
         }
 
-        buttonPause.setOnClickListener {
+        binding.buttonPause.setOnClickListener {
             pause()
         }
 
-        buttonStop.setOnClickListener {
+        binding.buttonStop.setOnClickListener {
            stop()
         }
 
@@ -49,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                  if(!started) break
                  total = total + 1
                  runOnUiThread {
-                     textTimer.text = formatTime(total)
+                     binding.textTimer.text = formatTime(total)
                  }
 
              }
@@ -66,7 +64,7 @@ class MainActivity : AppCompatActivity() {
     fun stop(){
         started = false
         total =0
-        textTimer.text = "00 : 00"
+        binding.textTimer.text = formatTime(total)
 
     }
 
