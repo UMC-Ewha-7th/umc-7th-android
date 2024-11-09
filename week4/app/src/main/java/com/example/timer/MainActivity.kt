@@ -1,6 +1,7 @@
 package com.example.timer
 
 import android.os.Bundle
+import android.os.SystemClock
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.timer.databinding.ActivityMainBinding
@@ -10,7 +11,7 @@ import java.util.Locale
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var timerJob: Job? = null
-    private var seconds = 0
+    private var startTime = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,13 +40,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startTimer() {
-        timerJob = CoroutineScope(Dispatchers.Default).launch { // 백그라운드에서 작업하도록 설정
-            while (isActive) { // 타이머 코루틴이 액티브 되어있을 경우 타이머 시간 증가
-                delay(10) // 0.01초 단위
-                seconds++
-                withContext(Dispatchers.Main) { // 메인 스레드에서 UI 업데이트
-                    updateTimerUI()
-                }
+        startTime = SystemClock.elapsedRealtime() // 시작 시간 기록
+        timerJob = CoroutineScope(Dispatchers.Main).launch {
+            while (isActive) {
+                val elapsed = SystemClock.elapsedRealtime() - startTime // 경과 시간 계산
+                updateTimerUI(elapsed)
+                delay(10) // UI 업데이트 간격
             }
         }
     }
@@ -56,14 +56,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun resetTimer() {
         stopTimer()
-        seconds = 0
-        updateTimerUI()
+        startTime = 0L
+        updateTimerUI(startTime)
     }
 
-    private fun updateTimerUI() {
-        val min = seconds / 6000
-        val sec = seconds / 100 % 60
-        val msec = seconds % 100
+    private fun updateTimerUI(elapsedMillis: Long) {
+        val min = (elapsedMillis / 60000).toInt()
+        val sec = ((elapsedMillis / 1000) % 60).toInt()
+        val msec = ((elapsedMillis % 1000) / 10).toInt()
         binding.tvTime.text = String.format(Locale.getDefault(), "%02d:%02d,%02d", min, sec, msec)
     }
 }
