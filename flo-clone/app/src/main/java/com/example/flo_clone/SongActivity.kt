@@ -82,6 +82,7 @@ class SongActivity : AppCompatActivity() {
     private fun setPlayer(song: Song) {
         binding.songMusicTitleTv.text = song.title
         binding.songSingerNameTv.text = song.singer
+
         binding.songStartTimeTv.text = formatTime(song.second)
         binding.songEndTimeTv.text = formatTime(song.playTime)
         binding.songProgressSb.progress = (song.second * 100000) / song.playTime
