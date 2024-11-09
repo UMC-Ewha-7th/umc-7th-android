@@ -1,6 +1,7 @@
 package com.example.flo_clone
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -12,6 +13,7 @@ class SongActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySongBinding
     private lateinit var song: Song
     private var timer: Timer? = null
+    private var mediaPlayer: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +56,8 @@ class SongActivity : AppCompatActivity() {
                 intent.getStringExtra("singer")!!,
                 intent.getIntExtra("second", 0),
                 intent.getIntExtra("playTime", 0),
-                intent.getBooleanExtra("isPlaying", false)
+                intent.getBooleanExtra("isPlaying", false),
+                intent.getStringExtra("music")!!
             )
         }
         startTimer()
@@ -67,6 +70,9 @@ class SongActivity : AppCompatActivity() {
         binding.songEndTimeTv.text = formatTime(song.playTime)
         binding.songProgressSb.progress = (song.second * 1000) / song.playTime
 
+        val music = resources.getIdentifier(song.music, "raw", packageName)
+        mediaPlayer = MediaPlayer.create(this, music)
+
         setPlayerStatus(song.isPlaying)
     }
 
@@ -77,9 +83,14 @@ class SongActivity : AppCompatActivity() {
         if (isPlaying) {
             binding.songMiniplayerIv.visibility = View.GONE
             binding.songPauseIv.visibility = View.VISIBLE
+            mediaPlayer?.start()
         } else {
             binding.songMiniplayerIv.visibility = View.VISIBLE
             binding.songPauseIv.visibility = View.GONE
+
+            if (mediaPlayer?.isPlaying == true) {
+                mediaPlayer?.pause()
+            }
         }
     }
 
@@ -93,6 +104,12 @@ class SongActivity : AppCompatActivity() {
         binding.songStartTimeTv.text = formatTime(song.second)
         binding.songProgressSb.progress = (song.second * 1000) / song.playTime
         startTimer()
+        mediaPlayer?.apply {
+            seekTo(0)
+            if (song.isPlaying) {
+                start()
+            }
+        }
     }
 
     private fun formatTime(second: Int): String {

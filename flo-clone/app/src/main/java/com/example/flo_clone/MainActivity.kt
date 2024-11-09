@@ -34,7 +34,8 @@ class MainActivity : AppCompatActivity() {
         val song = Song(
             binding.mainMiniplayerTitleTv.text.toString(),
             binding.mainMiniplayerSingerTv.text.toString(),
-            0, 60, false
+            0, 60, false,
+            "music_lilac"
         )
 
         // main_player_cl 눌렀을 때 SongActivity로 전환 리스너 설정
@@ -45,6 +46,7 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("second", song.second)
             intent.putExtra("playTime", song.playTime)
             intent.putExtra("isPlaying", song.isPlaying)
+            intent.putExtra("music", song.music)
             startForResult.launch(intent)
         }
     }
