@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("playTime", song.playTime)
             intent.putExtra("isPlaying", song.isPlaying)
             intent.putExtra("music", song.music)
+
             startForResult.launch(intent)
         }
     }
