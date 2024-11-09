@@ -2,6 +2,8 @@ package com.example.flo_clone
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -10,10 +12,13 @@ import com.example.flo_clone.ui.home.HomeFragment
 import com.example.flo_clone.ui.locker.LockerFragment
 import com.example.flo_clone.ui.look.LookFragment
 import com.example.flo_clone.ui.search.SearchFragment
+import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private var song: Song = Song()
+    private val gson: Gson = Gson()
 
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -31,13 +36,6 @@ class MainActivity : AppCompatActivity() {
 
         initBottomNavigation()
 
-        val song = Song(
-            binding.mainMiniplayerTitleTv.text.toString(),
-            binding.mainMiniplayerSingerTv.text.toString(),
-            0, 60, false,
-            "music_lilac"
-        )
-
         // main_player_cl 눌렀을 때 SongActivity로 전환 리스너 설정
         binding.mainPlayerCl.setOnClickListener {
             val intent = Intent(this, SongActivity::class.java)
@@ -49,6 +47,19 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("music", song.music)
             startForResult.launch(intent)
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val sharedPreferences = getSharedPreferences("song", MODE_PRIVATE)
+        val songJson = sharedPreferences.getString("songData", null)
+        song = if (songJson != null) {
+            gson.fromJson(songJson, Song::class.java)
+        } else {
+            Song("아이유 (IU)", "LILAC", 0, 60, false, "music_lilac")
+        }
+
+        setMiniPlayer(song)
     }
 
     private fun initBottomNavigation() {
@@ -89,5 +100,11 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+
+    private fun setMiniPlayer(song: Song) {
+        binding.mainMiniplayerTitleTv.text = song.title
+        binding.mainMiniplayerSingerTv.text = song.singer
+        binding.mainPlayerSeekbar.progress = song.second * 100000 / song.playTime
     }
 }

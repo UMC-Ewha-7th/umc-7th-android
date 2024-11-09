@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.flo_clone.databinding.ActivitySongBinding
+import com.google.gson.Gson
 import java.util.Locale
 
 class SongActivity : AppCompatActivity() {
@@ -14,6 +15,7 @@ class SongActivity : AppCompatActivity() {
     private lateinit var song: Song
     private var timer: Timer? = null
     private var mediaPlayer: MediaPlayer? = null
+    private var gson: Gson = Gson()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,9 +46,23 @@ class SongActivity : AppCompatActivity() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        setPlayerStatus(false)
+
+        // song 정보 저장
+        song.second = timer?.getSecond() ?: 0
+        val sharedPreferences = getSharedPreferences("song", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("songData", gson.toJson(song))
+        editor.apply()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         timer?.interrupt()
+        mediaPlayer?.release()
+        mediaPlayer = null
     }
 
     private fun initSong() {
@@ -68,10 +84,11 @@ class SongActivity : AppCompatActivity() {
         binding.songSingerNameTv.text = song.singer
         binding.songStartTimeTv.text = formatTime(song.second)
         binding.songEndTimeTv.text = formatTime(song.playTime)
-        binding.songProgressSb.progress = (song.second * 1000) / song.playTime
+        binding.songProgressSb.progress = (song.second * 100000) / song.playTime
 
         val music = resources.getIdentifier(song.music, "raw", packageName)
         mediaPlayer = MediaPlayer.create(this, music)
+        mediaPlayer!!.seekTo(song.second * 1000)
 
         setPlayerStatus(song.isPlaying)
     }
@@ -94,16 +111,22 @@ class SongActivity : AppCompatActivity() {
         }
     }
 
-    private fun startTimer() {
+    private fun startTimer(reset: Boolean = false) {
         timer = Timer(song.playTime, song.isPlaying)
+        if (reset) {
+            timer!!.setTimer(0)
+        } else {
+            timer!!.setTimer(song.second)
+        }
         timer!!.start()
     }
 
     private fun resetTimer() {
         timer?.interrupt()
-        binding.songStartTimeTv.text = formatTime(song.second)
+        binding.songStartTimeTv.text = formatTime(0)
         binding.songProgressSb.progress = (song.second * 1000) / song.playTime
-        startTimer()
+
+        startTimer(true)
         mediaPlayer?.apply {
             seekTo(0)
             if (song.isPlaying) {
@@ -141,6 +164,15 @@ class SongActivity : AppCompatActivity() {
             } catch (e: InterruptedException) {
                 Log.d("Song", "스레드가 죽었습니다. ${e.message}")
             }
+        }
+
+        fun setTimer(second: Int) {
+            this.second = second
+            this.mills = (second * 1000).toFloat()
+        }
+
+        fun getSecond(): Int {
+            return second
         }
     }
 }
