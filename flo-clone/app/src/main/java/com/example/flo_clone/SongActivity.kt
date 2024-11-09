@@ -6,11 +6,12 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.flo_clone.databinding.ActivitySongBinding
+import java.util.Locale
 
 class SongActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySongBinding
     private lateinit var song: Song
-    private lateinit var timer: Timer
+    private var timer: Timer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,11 +36,15 @@ class SongActivity : AppCompatActivity() {
         binding.songPauseIv.setOnClickListener {
             setPlayerStatus(false)
         }
+
+        binding.songRepeatIv.setOnClickListener {
+            resetTimer()
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        timer.interrupt()
+        timer?.interrupt()
     }
 
     private fun initSong() {
@@ -58,10 +63,8 @@ class SongActivity : AppCompatActivity() {
     private fun setPlayer(song: Song) {
         binding.songMusicTitleTv.text = song.title
         binding.songSingerNameTv.text = song.singer
-        binding.songStartTimeTv.text =
-            String.format("%02d:%02d", song.second / 60, song.second % 60)
-        binding.songEndTimeTv.text =
-            String.format("%02d:%02d", song.playTime / 60, song.playTime % 60)
+        binding.songStartTimeTv.text = formatTime(song.second)
+        binding.songEndTimeTv.text = formatTime(song.playTime)
         binding.songProgressSb.progress = (song.second * 1000) / song.playTime
 
         setPlayerStatus(song.isPlaying)
@@ -69,7 +72,7 @@ class SongActivity : AppCompatActivity() {
 
     private fun setPlayerStatus(isPlaying: Boolean) {
         song.isPlaying = isPlaying
-        timer.isPlaying = isPlaying
+        timer?.isPlaying = isPlaying
 
         if (isPlaying) {
             binding.songMiniplayerIv.visibility = View.GONE
@@ -82,7 +85,18 @@ class SongActivity : AppCompatActivity() {
 
     private fun startTimer() {
         timer = Timer(song.playTime, song.isPlaying)
-        timer.start()
+        timer!!.start()
+    }
+
+    private fun resetTimer() {
+        timer?.interrupt()
+        binding.songStartTimeTv.text = formatTime(song.second)
+        binding.songProgressSb.progress = (song.second * 1000) / song.playTime
+        startTimer()
+    }
+
+    private fun formatTime(second: Int): String {
+        return String.format(Locale.KOREA, "%02d:%02d", second / 60, second % 60)
     }
 
     inner class Timer(private val playTime: Int, var isPlaying: Boolean = true): Thread() {
@@ -101,8 +115,7 @@ class SongActivity : AppCompatActivity() {
 
                         if (mills % 1000 == 0f) {
                             runOnUiThread {
-                                binding.songStartTimeTv.text =
-                                    String.format("%02d:%02d", second / 60, second % 60)
+                                binding.songStartTimeTv.text = formatTime(second)
                             }
                             second++
                         }
