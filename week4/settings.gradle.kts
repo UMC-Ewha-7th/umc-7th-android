@@ -19,6 +19,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "week2_bottomtabnav"
+
+rootProject.name = "week4_threadcoroutine"
 include(":app")
  
