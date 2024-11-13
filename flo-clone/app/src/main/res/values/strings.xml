@@ -99,5 +99,10 @@
 
     <string name="locker_title_tv">보관함</string>
     <string name="saved_no_music_tv">저장한 곡이 없습니다.</string>
+    <string name="saved_btn_select_all_tv">전체선택</string>
+    <string name="saved_btn_select_play_tv">전체듣기</string>
+    <string name="saved_btn_edit_tv">편집</string>
+    <string name="song_title_1">결론적으로</string>
+    <string name="song_singer_1">SPARKY</string>
 
 </resources>
