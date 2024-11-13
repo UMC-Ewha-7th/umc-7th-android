@@ -20,14 +20,16 @@ class AlbumFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentAlbumBinding.inflate(inflater, container, false)
 
         if (arguments != null && arguments?.getString("title") != null && arguments?.getString("singer") != null) {
-            val title = arguments!!.getString("title")
-            val singer = arguments!!.getString("singer")
+            val title = requireArguments().getString("title")
+            val singer = requireArguments().getString("singer")
+            val img = requireArguments().getInt("img")
             binding.albumMusicTitleTv.text = title
             binding.albumSingerNameTv.text = singer
+            binding.albumAlbumIv.setImageResource(img)
         }
 
         binding.albumBackIv.setOnClickListener {
