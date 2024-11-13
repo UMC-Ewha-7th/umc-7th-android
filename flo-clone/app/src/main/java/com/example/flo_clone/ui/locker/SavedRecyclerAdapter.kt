@@ -25,7 +25,7 @@ class SavedRecyclerAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as SongViewHolder).bind(items[position], position)
+        (holder as SongViewHolder).bind(items[position])
     }
 
     private fun deleteItem(position: Int) {
@@ -37,21 +37,21 @@ class SavedRecyclerAdapter(
     inner class SongViewHolder(
         private val binding: ItemSongBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(song: Album, position: Int) {
+        fun bind(song: Album) {
             binding.songSingerTv.text = song.singer
             binding.songTitleTv.text = song.title
             binding.songAlbumIv.setImageResource(song.img)
 
             // 기존 리스너 제거 (뷰 재활용 시 리스너 중복 등록 방지)
             binding.switch1.setOnCheckedChangeListener(null)
-            binding.switch1.isChecked = switchStates[position]
+            binding.switch1.isChecked = switchStates[adapterPosition]
 
             binding.switch1.setOnCheckedChangeListener { _, isChecked ->
-                switchStates[position] = isChecked
+                switchStates[adapterPosition] = isChecked
             }
 
             binding.songMoreIv.setOnClickListener {
-                deleteItem(position)
+                deleteItem(adapterPosition)
             }
         }
     }
