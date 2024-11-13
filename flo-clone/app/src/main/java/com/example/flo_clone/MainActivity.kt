@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.flo_clone.databinding.ActivityMainBinding
+import com.example.flo_clone.model.Song
 import com.example.flo_clone.ui.home.HomeFragment
 import com.example.flo_clone.ui.locker.LockerFragment
 import com.example.flo_clone.ui.look.LookFragment
@@ -101,7 +102,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setMiniPlayer(song: Song) {
+    fun setMiniPlayer(song: Song) {
         binding.mainMiniplayerTitleTv.text = song.title
         binding.mainMiniplayerSingerTv.text = song.singer
         binding.mainPlayerSeekbar.progress = song.second * 100000 / song.playTime

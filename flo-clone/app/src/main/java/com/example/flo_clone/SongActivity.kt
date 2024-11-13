@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.flo_clone.databinding.ActivitySongBinding
+import com.example.flo_clone.model.Song
 import com.google.gson.Gson
 import java.util.Locale
 

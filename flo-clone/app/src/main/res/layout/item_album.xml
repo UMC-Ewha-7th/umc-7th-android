@@ -11,7 +11,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/home_album_img_iv1"
+            android:id="@+id/album_img_iv"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:contentDescription="@string/home_album_img_iv"
@@ -23,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/home_album_play_iv1"
+            android:id="@+id/album_play_iv"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginEnd="8dp"
@@ -36,7 +36,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/home_album_title_tv1"
+        android:id="@+id/album_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -45,7 +45,7 @@
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/home_album_singer_tv1"
+        android:id="@+id/album_singer_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"

@@ -1,4 +1,4 @@
-package com.example.flo_clone
+package com.example.flo_clone.model
 
 data class Song(
     val title: String = "",
