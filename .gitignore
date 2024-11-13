@@ -31,6 +31,7 @@ google-services.json
 
 # Android Profiling
 *.hprof
+<<<<<<< HEAD
 .gradle
 /local.properties
 /.idea/caches
@@ -44,3 +45,5 @@ google-services.json
 /captures
 .externalNativeBuild
 .cxx
+=======
+>>>>>>> eceb0eb ([week6] Flo Clone Coding)
