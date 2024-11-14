@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "com.example.umc_study_week5.app-mergeDebugResources-30:/layout/activity_display.xml",
+        "source": "com.example.umc_study_week5.app-main-33:/layout/activity_display.xml"
+    },
+    {
+        "merged": "com.example.umc_study_week5.app-mergeDebugResources-30:/layout/activity_main.xml",
+        "source": "com.example.umc_study_week5.app-main-33:/layout/activity_main.xml"
+    }
+]

@@ -1,0 +1,44 @@
+Index: week5/.gitignore
+===================================================================
+diff --git a/week5/.gitignore b/week5/.gitignore
+deleted file mode 100644
+--- a/week5/.gitignore	(revision 9e8e8cab1b64f3018fb1ca28dc8af8365bf4e9fe)
++++ /dev/null	(revision 9e8e8cab1b64f3018fb1ca28dc8af8365bf4e9fe)
+@@ -1,15 +0,0 @@
+-*.iml
+-.gradle
+-/local.properties
+-/.idea/caches
+-/.idea/libraries
+-/.idea/modules.xml
+-/.idea/workspace.xml
+-/.idea/navEditor.xml
+-/.idea/assetWizardSettings.xml
+-.DS_Store
+-/build
+-/captures
+-.externalNativeBuild
+-.cxx
+-local.properties
+Index: .gitignore
+===================================================================
+diff --git a/.gitignore b/.gitignore
+deleted file mode 100644
+--- a/.gitignore	(revision 9e8e8cab1b64f3018fb1ca28dc8af8365bf4e9fe)
++++ /dev/null	(revision 9e8e8cab1b64f3018fb1ca28dc8af8365bf4e9fe)
+@@ -1,15 +0,0 @@
+-*.iml
+-.gradle
+-/local.properties
+-/.idea/caches
+-/.idea/libraries
+-/.idea/modules.xml
+-/.idea/workspace.xml
+-/.idea/navEditor.xml
+-/.idea/assetWizardSettings.xml
+-.DS_Store
+-/build
+-/captures
+-.externalNativeBuild
+-.cxx
+-local.properties
