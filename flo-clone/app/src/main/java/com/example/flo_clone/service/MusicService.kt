@@ -65,6 +65,7 @@ class MusicService : Service() {
         }
         mediaPlayer?.start()
         startTimer()
+        Log.d("MusicService", "음악 재생: ${songs[nowPos].title}")
     }
 
     fun pause() {
@@ -74,12 +75,12 @@ class MusicService : Service() {
     }
 
     fun getCurSong(): Song {
-        songs[nowPos].second = mediaPlayer?.currentPosition!! / 1000
         return songs[nowPos]
     }
 
     fun updateSong() {
         songs[nowPos].second = mediaPlayer?.currentPosition!! / 1000
+        songs[nowPos].isPlaying = mediaPlayer?.isPlaying!!
         Thread {
             songDB.songDao().update(songs[nowPos])
         }.start()

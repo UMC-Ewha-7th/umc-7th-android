@@ -73,13 +73,11 @@ class SongActivity : AppCompatActivity() {
 
         // song 정보 저장
         musicService?.updateSong()
-        setPlayerStatus(false)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         if (isServiceBound) {
-            musicService?.updateSong()
             unbindService(serviceConnection)
             musicService = null
             isServiceBound = false

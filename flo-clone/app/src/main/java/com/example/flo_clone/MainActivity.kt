@@ -56,7 +56,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val serviceIntent = Intent(this, MusicService::class.java)
-        startService(serviceIntent)
         bindService(serviceIntent, serviceConnection, BIND_AUTO_CREATE)
 
         initBottomNavigation()
