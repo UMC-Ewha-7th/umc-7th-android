@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.flo_clone.MainActivity
 import com.example.flo_clone.R
 import com.example.flo_clone.databinding.FragmentHomeBinding
-import com.example.flo_clone.model.Album
-import com.example.flo_clone.model.Song
+import com.example.flo_clone.model.album.Album
+import com.example.flo_clone.model.song.Song
 import com.example.flo_clone.ui.album.AlbumFragment
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var listener: AlbumAdapterListener
-    private lateinit var albumRvAdapter: AlbumRecyclerAdapter
+    private lateinit var listener: TodayAlbumAdapterListener
+    private lateinit var albumRvAdapter: TodayAlbumRecyclerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,7 +25,7 @@ class HomeFragment : Fragment() {
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        listener = object : AlbumAdapterListener {
+        listener = object : TodayAlbumAdapterListener {
             override fun albumPlayClickListener(album: Album) {
                 val song = Song(album.title, album.singer, 0, 60, false, "music_lilac")
                 (context as MainActivity).setMiniPlayer(song)
@@ -48,8 +48,8 @@ class HomeFragment : Fragment() {
         // 오늘의 노래 RecyclerView 어댑터 적용
         val songList = ArrayList<Album>()
         for(i in 1..10) {
-            songList.add(Album("BTS", "Butter", R.drawable.img_album_exp))
-            songList.add(Album("아이유 (IU)", "LILAC", R.drawable.img_album_exp2))
+            songList.add(Album("BTS", "Butter", R.drawable.img_album_butter))
+            songList.add(Album("아이유 (IU)", "LILAC", R.drawable.img_album_lilac))
         }
         setupRecyclerView(songList)
 
@@ -63,7 +63,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecyclerView(albums: ArrayList<Album>) {
-        albumRvAdapter = AlbumRecyclerAdapter(albums, listener)
+        albumRvAdapter = TodayAlbumRecyclerAdapter(albums, listener)
         binding.homeTodayMusicTotalRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.homeTodayMusicTotalRv.adapter = albumRvAdapter
     }

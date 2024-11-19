@@ -1,22 +1,54 @@
 package com.example.flo_clone
 
+import android.content.BroadcastReceiver
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
-import android.media.MediaPlayer
+import android.content.IntentFilter
+import android.content.ServiceConnection
 import android.os.Bundle
-import android.util.Log
+import android.os.IBinder
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.flo_clone.databinding.ActivitySongBinding
-import com.example.flo_clone.model.Song
-import com.google.gson.Gson
+import com.example.flo_clone.model.song.Song
+import com.example.flo_clone.service.MusicService
 import java.util.Locale
 
 class SongActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySongBinding
     private lateinit var song: Song
-    private var timer: Timer? = null
-    private var mediaPlayer: MediaPlayer? = null
-    private var gson: Gson = Gson()
+    private var musicService: MusicService? = null
+    private var isServiceBound = false
+
+    private val progressReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent) {
+            if (intent.action == MusicService.ACTION_UPDATE_PROGRESS) {
+                val progress = intent.getIntExtra(MusicService.EXTRA_PROGRESS, 0)
+                binding.songProgressSb.progress = progress
+                binding.songStartTimeTv.text = formatTime(progress * song.playTime / 100000)
+            }
+        }
+    }
+
+    private val serviceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            val binder = service as MusicService.MusicServiceBinder
+            musicService = binder.getService()
+            isServiceBound = true
+
+            musicService?.getCurSong()?.let {
+                song = it
+                setPlayer(song)
+            }
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            musicService = null
+            isServiceBound = false
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,157 +56,97 @@ class SongActivity : AppCompatActivity() {
         binding = ActivitySongBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initSong()
-        setPlayer(song)
+        val serviceIntent = Intent(this, MusicService::class.java)
+        bindService(serviceIntent, serviceConnection, BIND_AUTO_CREATE)
 
-        binding.songDownIb.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("title", binding.songMusicTitleTv.text.toString())
-            setResult(RESULT_OK, intent)
-            finish()
-        }
-
-        binding.songMiniplayerIv.setOnClickListener {
-            setPlayerStatus(true)
-        }
-
-        binding.songPauseIv.setOnClickListener {
-            setPlayerStatus(false)
-        }
-
-        binding.songRepeatIv.setOnClickListener {
-            resetTimer()
-        }
+        initClickListener()
+        ContextCompat.registerReceiver(
+            this,
+            progressReceiver,
+            IntentFilter(MusicService.ACTION_UPDATE_PROGRESS),
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
     }
 
     override fun onPause() {
         super.onPause()
-        setPlayerStatus(false)
 
         // song 정보 저장
-        song.second = timer?.getSecond() ?: 0
-        val sharedPreferences = getSharedPreferences("song", MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putString("songData", gson.toJson(song))
-        editor.apply()
+        musicService?.updateSong()
+        setPlayerStatus(false)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        timer?.interrupt()
-        mediaPlayer?.release()
-        mediaPlayer = null
+        if (isServiceBound) {
+            musicService?.updateSong()
+            unbindService(serviceConnection)
+            musicService = null
+            isServiceBound = false
+        }
     }
 
-    private fun initSong() {
-        if (intent.hasExtra("title") && intent.hasExtra("singer")) {
-            song = Song(
-                intent.getStringExtra("title")!!,
-                intent.getStringExtra("singer")!!,
-                intent.getIntExtra("second", 0),
-                intent.getIntExtra("playTime", 0),
-                intent.getBooleanExtra("isPlaying", false),
-                intent.getStringExtra("music")!!
-            )
+    private fun initClickListener() {
+        binding.songDownIb.setOnClickListener {
+            musicService?.updateSong()
+            finish()
         }
-        startTimer()
+
+        binding.songPlayIv.setOnClickListener {
+            if (isServiceBound) {
+                musicService?.play()
+                setPlayerStatus(true)
+            }
+        }
+
+        binding.songPauseIv.setOnClickListener {
+            if (isServiceBound) {
+                musicService?.pause()
+                setPlayerStatus(false)
+            }
+        }
+
+        binding.songNextIv.setOnClickListener {
+            moveSong(1)
+        }
+
+        binding.songPreviousIv.setOnClickListener {
+            moveSong(-1)
+        }
+    }
+
+    private fun moveSong(direct: Int) {
+        musicService?.moveSong(direct)?.let {
+            song = it
+            setPlayer(song)
+        }
     }
 
     private fun setPlayer(song: Song) {
         binding.songMusicTitleTv.text = song.title
         binding.songSingerNameTv.text = song.singer
+        binding.songAlbumIv.setImageResource(song.coverImg!!)
 
         binding.songStartTimeTv.text = formatTime(song.second)
         binding.songEndTimeTv.text = formatTime(song.playTime)
-        binding.songProgressSb.progress = (song.second * 100000) / song.playTime
-
-        val music = resources.getIdentifier(song.music, "raw", packageName)
-        mediaPlayer = MediaPlayer.create(this, music)
-        mediaPlayer!!.seekTo(song.second * 1000)
+        binding.songProgressSb.progress = (song.second * 1000 / song.playTime) * 100
 
         setPlayerStatus(song.isPlaying)
     }
 
     private fun setPlayerStatus(isPlaying: Boolean) {
         song.isPlaying = isPlaying
-        timer?.isPlaying = isPlaying
 
         if (isPlaying) {
-            binding.songMiniplayerIv.visibility = View.GONE
+            binding.songPlayIv.visibility = View.GONE
             binding.songPauseIv.visibility = View.VISIBLE
-            mediaPlayer?.start()
         } else {
-            binding.songMiniplayerIv.visibility = View.VISIBLE
+            binding.songPlayIv.visibility = View.VISIBLE
             binding.songPauseIv.visibility = View.GONE
-
-            if (mediaPlayer?.isPlaying == true) {
-                mediaPlayer?.pause()
-            }
-        }
-    }
-
-    private fun startTimer(reset: Boolean = false) {
-        timer = Timer(song.playTime, song.isPlaying)
-        if (reset) {
-            timer!!.setTimer(0)
-        } else {
-            timer!!.setTimer(song.second)
-        }
-        timer!!.start()
-    }
-
-    private fun resetTimer() {
-        timer?.interrupt()
-        binding.songStartTimeTv.text = formatTime(0)
-        binding.songProgressSb.progress = (song.second * 1000) / song.playTime
-
-        startTimer(true)
-        mediaPlayer?.apply {
-            seekTo(0)
-            if (song.isPlaying) {
-                start()
-            }
         }
     }
 
     private fun formatTime(second: Int): String {
         return String.format(Locale.KOREA, "%02d:%02d", second / 60, second % 60)
-    }
-
-    inner class Timer(private val playTime: Int, var isPlaying: Boolean = true): Thread() {
-        private var second : Int = 0
-        private var mills : Float = 0f
-
-        override fun run() {
-            try {
-                while (true) {
-                    if (isPlaying) {
-                        sleep(50)
-                        mills += 50
-                        runOnUiThread {
-                            binding.songProgressSb.progress = ((mills / playTime) * 100).toInt()
-                        }
-
-                        if (mills % 1000 == 0f) {
-                            runOnUiThread {
-                                binding.songStartTimeTv.text = formatTime(second)
-                            }
-                            second++
-                        }
-                    }
-                }
-            } catch (e: InterruptedException) {
-                Log.d("Song", "스레드가 죽었습니다. ${e.message}")
-            }
-        }
-
-        fun setTimer(second: Int) {
-            this.second = second
-            this.mills = (second * 1000).toFloat()
-        }
-
-        fun getSecond(): Int {
-            return second
-        }
     }
 }

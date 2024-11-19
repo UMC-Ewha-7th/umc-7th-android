@@ -94,7 +94,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginBottom="20dp"
             android:contentDescription="@string/home_panel_album_img_iv"
-            android:src="@drawable/img_album_exp"
+            android:src="@drawable/img_album_butter"
             app:layout_constraintBottom_toTopOf="@+id/home_panel_album_img_iv2"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -126,7 +126,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginBottom="30dp"
             android:contentDescription="@string/home_panel_album_img_iv"
-            android:src="@drawable/img_album_exp"
+            android:src="@drawable/img_album_butter"
             app:layout_constraintBottom_toBottomOf="@+id/home_panel_background_iv"
             app:layout_constraintStart_toStartOf="parent" />
 
