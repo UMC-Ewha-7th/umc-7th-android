@@ -46,6 +46,11 @@ class MusicService : Service() {
         updateSong()
     }
 
+    fun fetchSongs() {
+        songs.clear()
+        songs.addAll(songDB.songDao().getAll())
+    }
+
     fun initSong(): Song {
         val spf = getSharedPreferences("song", MODE_PRIVATE)
         val songId = spf.getInt("songId", 0)
@@ -79,11 +84,13 @@ class MusicService : Service() {
     }
 
     fun updateSong() {
-        songs[nowPos].second = mediaPlayer?.currentPosition!! / 1000
-        songs[nowPos].isPlaying = mediaPlayer?.isPlaying!!
-        Thread {
-            songDB.songDao().update(songs[nowPos])
-        }.start()
+        if (mediaPlayer != null) {
+            songs[nowPos].second = mediaPlayer?.currentPosition!! / 1000
+            songs[nowPos].isPlaying = mediaPlayer?.isPlaying!!
+            Thread {
+                songDB.songDao().update(songs[nowPos])
+            }.start()
+        }
 
         val editor = getSharedPreferences("song", MODE_PRIVATE).edit()
         editor.putInt("songId", songs[nowPos].id)
@@ -247,7 +254,7 @@ class MusicService : Service() {
 
     private fun startTimer() {
         if (timer == null) {
-            timer = Timer(songs[nowPos].second, songs[nowPos].playTime, true)
+            timer = Timer(songs[nowPos].playTime, true)
             timer?.start()
         } else {
             timer?.isPlaying = true
@@ -261,11 +268,10 @@ class MusicService : Service() {
     }
 
     inner class Timer(
-        private val second: Int,
         private val playTime: Int,
         var isPlaying: Boolean = true
     ) : Thread() {
-        private var mills: Float = (second * 1000).toFloat()
+        private var mills: Float = (songs[nowPos].second * 1000).toFloat()
 
         override fun run() {
             try {

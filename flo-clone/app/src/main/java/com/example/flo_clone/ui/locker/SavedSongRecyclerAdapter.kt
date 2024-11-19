@@ -3,17 +3,24 @@ package com.example.flo_clone.ui.locker
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.flo_clone.R
 import com.example.flo_clone.databinding.ItemSongBinding
-import com.example.flo_clone.model.album.Album
+import com.example.flo_clone.model.song.Song
 
-class SavedSongRecyclerAdapter(
-    private val items: ArrayList<Album>
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private val switchStates = MutableList(items.size) { false }
+class SavedSongRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val songs = ArrayList<Song>()
 
-    override fun getItemCount(): Int {
-        return items.size
+    interface OnItemClickListener {
+        fun onRemoveItem(songId: Int)
     }
+
+    private lateinit var listener: OnItemClickListener
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.listener = listener
+    }
+
+    override fun getItemCount(): Int = songs.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding = ItemSongBinding.inflate(
@@ -25,30 +32,31 @@ class SavedSongRecyclerAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as SongViewHolder).bind(items[position])
+        (holder as SongViewHolder).bind(songs[position])
+        holder.binding.songMoreIv.setOnClickListener {
+            listener.onRemoveItem(songs[position].id)
+            deleteItem(position)
+        }
     }
 
     private fun deleteItem(position: Int) {
-        items.removeAt(position)
-        switchStates.removeAt(position)
+        songs.removeAt(position)
         notifyItemRemoved(position)
     }
 
+    fun addItems(newItems: ArrayList<Song>) {
+        songs.clear()
+        songs.addAll(newItems)
+        notifyItemRangeChanged(0, newItems.size)
+    }
+
     inner class SongViewHolder(
-        private val binding: ItemSongBinding
+        val binding: ItemSongBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(song: Album) {
+        fun bind(song: Song) {
             binding.songSingerTv.text = song.singer
             binding.songTitleTv.text = song.title
-            binding.songAlbumIv.setImageResource(song.img)
-
-            // 기존 리스너 제거 (뷰 재활용 시 리스너 중복 등록 방지)
-            binding.switch1.setOnCheckedChangeListener(null)
-            binding.switch1.isChecked = switchStates[adapterPosition]
-
-            binding.switch1.setOnCheckedChangeListener { _, isChecked ->
-                switchStates[adapterPosition] = isChecked
-            }
+            binding.songAlbumIv.setImageResource(song.coverImg ?: R.drawable.img_album_butter)
 
             binding.songMoreIv.setOnClickListener {
                 deleteItem(adapterPosition)

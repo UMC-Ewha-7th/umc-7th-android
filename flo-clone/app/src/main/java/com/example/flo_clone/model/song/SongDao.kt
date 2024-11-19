@@ -22,4 +22,10 @@ interface SongDao {
 
     @Query("SELECT * FROM Song WHERE id = :id")
     fun getSong(id: Int): Song
+
+    @Query("UPDATE Song SET isLike = :isLike WHERE id = :id")
+    fun updateLikeById(id: Int, isLike: Boolean)
+
+    @Query("SELECT * FROM Song WHERE isLike = :isLike")
+    fun getLikedSongs(isLike: Boolean): List<Song>
 }

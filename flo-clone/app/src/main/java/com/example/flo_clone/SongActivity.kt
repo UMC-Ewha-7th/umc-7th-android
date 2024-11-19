@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.flo_clone.databinding.ActivitySongBinding
 import com.example.flo_clone.model.song.Song
+import com.example.flo_clone.model.song.SongDatabase
 import com.example.flo_clone.service.MusicService
 import java.util.Locale
 
@@ -38,6 +39,8 @@ class SongActivity : AppCompatActivity() {
             val binder = service as MusicService.MusicServiceBinder
             musicService = binder.getService()
             isServiceBound = true
+
+            musicService?.fetchSongs()
 
             musicService?.getCurSong()?.let {
                 song = it
@@ -128,6 +131,24 @@ class SongActivity : AppCompatActivity() {
                 musicService?.play()
             }
         })
+
+        binding.songLikeIv.setOnClickListener {
+            setLike(!song.isLike)
+        }
+    }
+
+    private fun setLike(isLike: Boolean) {
+        song.isLike = isLike
+        if (isLike) {
+            binding.songLikeIv.setImageResource(R.drawable.ic_my_like_on)
+        } else {
+            binding.songLikeIv.setImageResource(R.drawable.ic_my_like_off)
+        }
+
+        Thread {
+            val songDB = SongDatabase.getInstance(this)!!
+            songDB.songDao().updateLikeById(song.id, song.isLike)
+        }.start()
     }
 
     private fun moveSong(direct: Int) {
@@ -145,6 +166,12 @@ class SongActivity : AppCompatActivity() {
         binding.songStartTimeTv.text = formatTime(song.second)
         binding.songEndTimeTv.text = formatTime(song.playTime)
         binding.songProgressSb.progress = (song.second * 1000 / song.playTime) * 100
+
+        if (song.isLike) {
+            binding.songLikeIv.setImageResource(R.drawable.ic_my_like_on)
+        } else {
+            binding.songLikeIv.setImageResource(R.drawable.ic_my_like_off)
+        }
 
         setPlayerStatus(song.isPlaying)
     }
