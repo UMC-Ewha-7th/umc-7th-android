@@ -113,8 +113,9 @@ class MusicService : Service() {
         return songs[nowPos]
     }
 
-    fun isPlaying(): Boolean {
-        return mediaPlayer?.isPlaying ?: false
+    fun seekTo(progress: Int) {
+        mediaPlayer?.seekTo((progress * songs[nowPos].playTime / 100))
+        timer?.setMills((progress * songs[nowPos].playTime / 100).toFloat())
     }
 
     private fun inputDummySongs() {
@@ -284,6 +285,10 @@ class MusicService : Service() {
             val intent = Intent(ACTION_UPDATE_PROGRESS)
             intent.putExtra(EXTRA_PROGRESS, progress)
             sendBroadcast(intent)
+        }
+
+        fun setMills(mills: Float) {
+            this.mills = mills
         }
     }
 

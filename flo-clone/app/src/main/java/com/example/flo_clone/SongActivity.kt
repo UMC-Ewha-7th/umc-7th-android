@@ -9,6 +9,7 @@ import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
 import android.view.View
+import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.flo_clone.databinding.ActivitySongBinding
@@ -111,6 +112,22 @@ class SongActivity : AppCompatActivity() {
         binding.songPreviousIv.setOnClickListener {
             moveSong(-1)
         }
+
+        binding.songProgressSb.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (fromUser) {
+                    musicService?.seekTo(progress)
+                }
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                musicService?.pause()
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                musicService?.play()
+            }
+        })
     }
 
     private fun moveSong(direct: Int) {
