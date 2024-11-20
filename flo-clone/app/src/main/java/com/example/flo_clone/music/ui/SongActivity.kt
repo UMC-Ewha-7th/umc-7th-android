@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
+import android.util.Log
 import android.view.View
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
@@ -43,11 +44,11 @@ class SongActivity : AppCompatActivity() {
             musicService = binder.getService()
             isServiceBound = true
 
-
             musicService?.fetchSongs()
             musicService?.getCurSong()?.let {
                 song = it
                 setPlayer(song)
+                Log.d("SongActivity", "onServiceConnected: $song")
             }
         }
 
@@ -79,6 +80,15 @@ class SongActivity : AppCompatActivity() {
         super.onPause()
 
         musicService?.updateSongProgress()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        musicService?.fetchSongs()
+        musicService?.getCurSong()?.let {
+            song = it
+            setPlayer(song)
+        }
     }
 
     override fun onDestroy() {

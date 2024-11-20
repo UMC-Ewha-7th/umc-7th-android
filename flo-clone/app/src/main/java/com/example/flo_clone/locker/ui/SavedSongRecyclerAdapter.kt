@@ -37,19 +37,7 @@ class SavedSongRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
         }
 
         holder.binding.songItemCl.setOnClickListener {
-            if (selectedItems.contains(songs[position])) {
-                selectedItems.remove(songs[position])
-
-                if (selectedItems.isEmpty()) {
-                    listener.onItemClicked(false)
-                }
-            } else if (selectedItems.isEmpty()){
-                listener.onItemClicked(true)
-                selectedItems.add(songs[position])
-            } else {
-                selectedItems.add(songs[position])
-            }
-            notifyItemChanged(position)
+            selectItem(songs[position])
         }
     }
 
@@ -60,12 +48,28 @@ class SavedSongRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
     fun addItems(newItems: ArrayList<Song>) {
         songs.clear()
         songs.addAll(newItems)
-        notifyItemRangeChanged(0, newItems.size)
+        notifyDataSetChanged()
     }
 
     fun selectAll() {
         selectedItems.clear()
         selectedItems.addAll(songs)
+        notifyDataSetChanged()
+    }
+
+    private fun selectItem(song: Song) {
+        if (selectedItems.contains(song)) {
+            selectedItems.remove(song)
+
+            if (selectedItems.isEmpty()) {
+                listener.onItemClicked(false)
+            }
+        } else if (selectedItems.isEmpty()) {
+            listener.onItemClicked(true)
+            selectedItems.add(song)
+        } else {
+            selectedItems.add(song)
+        }
         notifyDataSetChanged()
     }
 
@@ -84,8 +88,12 @@ class SavedSongRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
     }
 
     private fun deleteItem(position: Int) {
-        songs.removeAt(position)
-        notifyItemRemoved(position)
+        if (position >= 0 && position < songs.size) {
+            songs.removeAt(position)
+            notifyItemRemoved(position)
+        } else {
+            notifyDataSetChanged()
+        }
     }
 
     inner class SongViewHolder(

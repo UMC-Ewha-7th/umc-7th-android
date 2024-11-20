@@ -78,15 +78,12 @@ class MusicService : Service() {
     fun getCurSong(): Song = songs[nowPos]
 
     fun setCurSong(songId: Int, isPlaying: Boolean) {
-        songs[nowPos].isPlaying = false
-        songs[nowPos].second = 0
-
         nowPos = getPositionById(songId)
         Log.d("MusicService", "nowPos: $nowPos")
         songs[nowPos].isPlaying = isPlaying
         initMediaPlayer(songs[nowPos])
 
-        if(songs[nowPos].isPlaying) play()
+        if (songs[nowPos].isPlaying) play()
     }
 
     fun updateSongProgress() {
