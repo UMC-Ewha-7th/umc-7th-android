@@ -96,6 +96,8 @@
     <string name="song_music_title_5">Celebrity</string>
     <string name="song_list_order_6">06</string>
     <string name="song_music_title_6">돌림노래 (Feat. DEAN)</string>
+    <string name="song_like_on">좋아요 한 곡에 담겼습니다.</string>
+    <string name="song_like_off">좋아요 한 곡이 취소되었습니다.</string>
 
     <string name="locker_title_tv">보관함</string>
     <string name="saved_no_music_tv">저장한 곡이 없습니다.</string>

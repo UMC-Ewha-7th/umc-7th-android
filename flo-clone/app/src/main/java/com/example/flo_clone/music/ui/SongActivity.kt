@@ -14,9 +14,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.flo_clone.R
 import com.example.flo_clone.databinding.ActivitySongBinding
+import com.example.flo_clone.databinding.SnackbarCustomBinding
 import com.example.flo_clone.music.data.Song
 import com.example.flo_clone.music.data.SongDatabase
 import com.example.flo_clone.music.service.MusicService
+import com.google.android.material.snackbar.Snackbar
 import java.util.Locale
 
 class SongActivity : AppCompatActivity() {
@@ -132,6 +134,28 @@ class SongActivity : AppCompatActivity() {
 
         binding.songLikeIv.setOnClickListener {
             setLike(!song.isLike)
+
+            val message = if (song.isLike) {
+                R.string.song_like_on
+            } else {
+                R.string.song_like_off
+            }
+
+            val snackBar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+            val snackBarBinding = SnackbarCustomBinding.inflate(layoutInflater)
+
+            snackBarBinding.run {
+                snackbarText.text = getString(message)
+            }
+
+            val snackBarLayout = snackBar.view as Snackbar.SnackbarLayout
+            with(snackBarLayout) {
+                removeAllViews()
+                setPadding(0, 0, 0, 30)
+                setBackgroundColor(ContextCompat.getColor(this@SongActivity, R.color.transparent))
+                addView(snackBarBinding.root, 0)
+            }
+            snackBar.show()
         }
     }
 
