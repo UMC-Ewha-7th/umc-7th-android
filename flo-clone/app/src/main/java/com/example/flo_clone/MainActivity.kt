@@ -13,13 +13,14 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.flo_clone.databinding.ActivityMainBinding
-import com.example.flo_clone.music.data.Song
-import com.example.flo_clone.music.service.MusicService
 import com.example.flo_clone.home.ui.HomeFragment
 import com.example.flo_clone.locker.ui.LockerFragment
 import com.example.flo_clone.look.ui.LookFragment
+import com.example.flo_clone.music.data.Song
+import com.example.flo_clone.music.service.MusicService
 import com.example.flo_clone.music.ui.SongActivity
 import com.example.flo_clone.search.ui.SearchFragment
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -192,6 +193,16 @@ class MainActivity : AppCompatActivity() {
         musicService?.setCurSong(songList[0].id, true)
         setMiniPlayer(songList[0])
         song = songList[0]
+    }
+
+    fun showBottomSheet(isActive: Boolean) {
+        if (isActive) {
+            binding.mainPlayerCl.visibility = View.GONE
+            binding.navView.visibility = View.GONE
+        } else {
+            binding.mainPlayerCl.visibility = View.VISIBLE
+            binding.navView.visibility = View.VISIBLE
+        }
     }
 
     private fun setMiniPlayer(song: Song) {

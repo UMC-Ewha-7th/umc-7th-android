@@ -9,10 +9,12 @@ import com.example.flo_clone.music.data.Song
 
 class SavedSongRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val songs = ArrayList<Song>()
+    private val selectedItems = ArrayList<Song>()
     private lateinit var listener: OnItemClickListener
 
     interface OnItemClickListener {
         fun onRemoveItem(songId: Int)
+        fun onItemClicked(isSelected: Boolean)
     }
 
     override fun getItemCount(): Int = songs.size
@@ -33,6 +35,22 @@ class SavedSongRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
             listener.onRemoveItem(songs[position].id)
             deleteItem(position)
         }
+
+        holder.binding.songItemCl.setOnClickListener {
+            if (selectedItems.contains(songs[position])) {
+                selectedItems.remove(songs[position])
+
+                if (selectedItems.isEmpty()) {
+                    listener.onItemClicked(false)
+                }
+            } else if (selectedItems.isEmpty()){
+                listener.onItemClicked(true)
+                selectedItems.add(songs[position])
+            } else {
+                selectedItems.add(songs[position])
+            }
+            notifyItemChanged(position)
+        }
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
@@ -43,6 +61,26 @@ class SavedSongRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
         songs.clear()
         songs.addAll(newItems)
         notifyItemRangeChanged(0, newItems.size)
+    }
+
+    fun selectAll() {
+        selectedItems.clear()
+        selectedItems.addAll(songs)
+        notifyDataSetChanged()
+    }
+
+    fun deselectAll() {
+        selectedItems.clear()
+        notifyDataSetChanged()
+    }
+
+    fun deleteSelectedItems() {
+        selectedItems.forEach {
+            listener.onRemoveItem(it.id)
+        }
+        songs.removeAll(selectedItems.toSet())
+        selectedItems.clear()
+        notifyDataSetChanged()
     }
 
     private fun deleteItem(position: Int) {
@@ -57,6 +95,12 @@ class SavedSongRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
             binding.songSingerTv.text = song.singer
             binding.songTitleTv.text = song.title
             binding.songAlbumIv.setImageResource(song.coverImg ?: R.drawable.img_album_butter)
+
+            if (selectedItems.contains(song)) {
+                binding.root.setBackgroundColor(binding.root.context.getColor(R.color.light_gray))
+            } else {
+                binding.root.setBackgroundColor(binding.root.context.getColor(R.color.white))
+            }
         }
     }
 }

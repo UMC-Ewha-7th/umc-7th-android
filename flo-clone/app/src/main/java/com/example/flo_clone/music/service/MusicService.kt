@@ -93,6 +93,12 @@ class MusicService : Service() {
         songs[nowPos].second = mediaController.getCurrentPosition() / 1000
     }
 
+    fun fetchSongs() {
+        for (i in 0 until songs.size) {
+            songs[i] = songRepository.getSongById(songs[i].id)
+        }
+    }
+
     fun setSongs(songs: ArrayList<Song>) {
         this.songs = songs.toMutableList()
         Log.d("MusicService", "setSongs: $songs")

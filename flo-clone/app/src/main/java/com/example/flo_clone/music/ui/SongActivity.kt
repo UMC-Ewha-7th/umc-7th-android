@@ -43,6 +43,8 @@ class SongActivity : AppCompatActivity() {
             musicService = binder.getService()
             isServiceBound = true
 
+
+            musicService?.fetchSongs()
             musicService?.getCurSong()?.let {
                 song = it
                 setPlayer(song)

@@ -1,14 +1,18 @@
 package com.example.flo_clone.locker.ui
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.flo_clone.MainActivity
+import com.example.flo_clone.R
 import com.example.flo_clone.databinding.FragmentSavedBinding
 import com.example.flo_clone.music.data.Song
 import com.example.flo_clone.music.data.SongDatabase
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 class SavedSongFragment : Fragment() {
     private lateinit var binding: FragmentSavedBinding
@@ -24,8 +28,46 @@ class SavedSongFragment : Fragment() {
         songDB = SongDatabase.getInstance(requireContext())!!
 
         setupRecyclerView()
+        changeSelectStatus(false)
+
+        binding.savedBtnSelectAllTv.setOnClickListener {
+            if (binding.savedBtnSelectAllTv.text == getString(R.string.saved_btn_deselct_all_tv)) {
+                savedAdapter.deselectAll()
+                changeSelectStatus(false)
+            } else {
+                savedAdapter.selectAll()
+                changeSelectStatus(true)
+            }
+        }
+
+        binding.sheetDeleteIv.setOnClickListener {
+            savedAdapter.deleteSelectedItems()
+            changeSelectStatus(false)
+        }
 
         return binding.root
+    }
+
+    private fun changeSelectStatus(isSelected: Boolean) {
+        val bottomBehavior = BottomSheetBehavior.from(binding.bottomSheet)
+
+        if (isSelected) {
+            binding.savedBtnSelectAllTv.text = getString(R.string.saved_btn_deselct_all_tv)
+            binding.savedBtnSelectAllIv.setColorFilter(Color.parseColor("#3F3FFF"))
+            binding.savedBtnSelectAllTv.setTextColor(Color.parseColor("#3F3FFF"))
+
+            (activity as MainActivity).showBottomSheet(true)
+            binding.bottomSheet.visibility = View.VISIBLE
+            bottomBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        } else {
+            binding.savedBtnSelectAllTv.text = getString(R.string.saved_btn_select_all_tv)
+            binding.savedBtnSelectAllIv.setColorFilter(Color.parseColor("#000000"))
+            binding.savedBtnSelectAllTv.setTextColor(Color.parseColor("#000000"))
+
+            bottomBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            binding.bottomSheet.visibility = View.GONE
+            (activity as MainActivity).showBottomSheet(false)
+        }
     }
 
     override fun onResume() {
@@ -40,6 +82,10 @@ class SavedSongFragment : Fragment() {
         savedAdapter.setOnItemClickListener(object : SavedSongRecyclerAdapter.OnItemClickListener {
             override fun onRemoveItem(songId: Int) {
                 songDB.songDao().updateLikeById(songId, false)
+            }
+
+            override fun onItemClicked(isSelected: Boolean) {
+                changeSelectStatus(isSelected)
             }
         })
         binding.savedRv.adapter = savedAdapter
