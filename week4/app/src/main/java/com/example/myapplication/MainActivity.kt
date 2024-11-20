@@ -17,7 +17,6 @@ class MainActivity : AppCompatActivity() {
     var started = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -34,8 +33,6 @@ class MainActivity : AppCompatActivity() {
         binding.buttonStop.setOnClickListener {
            stop()
         }
-
-
     }
 
 
@@ -49,9 +46,7 @@ class MainActivity : AppCompatActivity() {
                  runOnUiThread {
                      binding.textTimer.text = formatTime(total)
                  }
-
              }
-
          }
         thread.start()
     }
@@ -65,13 +60,11 @@ class MainActivity : AppCompatActivity() {
         started = false
         total =0
         binding.textTimer.text = formatTime(total)
-
     }
 
     fun formatTime(time:Int):String{
         val minute = String.format("%02d", time/60)
         val second = String.format("%02d",time%60)
         return "$minute : $second"
-
     }
 }

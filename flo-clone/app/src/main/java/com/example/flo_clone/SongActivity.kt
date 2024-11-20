@@ -25,7 +25,6 @@ class SongActivity : AppCompatActivity() {
         setPlayer(song)
 
         binding.songRepeatIv.setOnClickListener{
-
             timer.interrupt()
             startTimer()
 
