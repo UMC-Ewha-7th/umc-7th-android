@@ -12,12 +12,13 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.flo_clone.databinding.ActivityMainBinding
-import com.example.flo_clone.model.song.Song
-import com.example.flo_clone.service.MusicService
-import com.example.flo_clone.ui.home.HomeFragment
-import com.example.flo_clone.ui.locker.LockerFragment
-import com.example.flo_clone.ui.look.LookFragment
-import com.example.flo_clone.ui.search.SearchFragment
+import com.example.flo_clone.music.data.Song
+import com.example.flo_clone.music.service.MusicService
+import com.example.flo_clone.home.ui.HomeFragment
+import com.example.flo_clone.locker.ui.LockerFragment
+import com.example.flo_clone.look.ui.LookFragment
+import com.example.flo_clone.music.ui.SongActivity
+import com.example.flo_clone.search.ui.SearchFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
