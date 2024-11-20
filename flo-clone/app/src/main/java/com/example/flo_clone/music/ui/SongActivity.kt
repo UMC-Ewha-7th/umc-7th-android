@@ -41,8 +41,6 @@ class SongActivity : AppCompatActivity() {
             musicService = binder.getService()
             isServiceBound = true
 
-            musicService?.fetchSongs()
-
             musicService?.getCurSong()?.let {
                 song = it
                 setPlayer(song)
@@ -76,8 +74,7 @@ class SongActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
 
-        // song 정보 저장
-        musicService?.updateSong()
+        musicService?.updateSongProgress()
     }
 
     override fun onDestroy() {
@@ -91,7 +88,7 @@ class SongActivity : AppCompatActivity() {
 
     private fun initClickListener() {
         binding.songDownIb.setOnClickListener {
-            musicService?.updateSong()
+            musicService?.updateSongProgress()
             finish()
         }
 

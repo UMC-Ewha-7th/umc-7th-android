@@ -48,9 +48,7 @@ class HomeFragment : Fragment() {
                 val songs = songDB.songDao().getSongsByAlbumId(album.id)
 
                 if(songs.isEmpty()) return
-                (context as MainActivity).updateSongList(songs as ArrayList<Song>)
-                songs[0].isPlaying = true
-                (context as MainActivity).setMiniPlayer(songs[0])
+                (context as MainActivity).setSongsAndPlay(songs as ArrayList<Song>)
             }
 
             override fun albumClickListener(album: Album) {

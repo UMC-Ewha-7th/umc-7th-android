@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginHorizontal="10dp">
+    android:layout_marginHorizontal="10dp"
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
@@ -37,18 +37,22 @@
 
     <TextView
         android:id="@+id/album_title_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:text="@string/home_album_title_tv"
         android:textColor="@color/black"
         android:textSize="16sp" />
 
     <TextView
         android:id="@+id/album_singer_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:text="@string/home_album_singer_tv"
         android:textColor="@color/gray_color"
         android:textSize="13sp" />

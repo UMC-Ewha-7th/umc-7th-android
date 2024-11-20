@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -139,15 +140,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initSong() {
-        musicService?.initSong()?.let {
-            song = it
-            setMiniPlayer(song)
-        }
+        val spf = getSharedPreferences("song", Context.MODE_PRIVATE)
+        val songId = spf.getInt("songId", 0)
+
+        musicService?.setCurSong(songId, false)
+        song = musicService?.getCurSong() ?: return
+        setMiniPlayer(song)
     }
 
     private fun initClickListener() {
         binding.mainPlayerCl.setOnClickListener {
-            musicService?.updateSong()
+            musicService?.updateSongProgress()
             val intent = Intent(this, SongActivity::class.java)
             startActivity(intent)
         }
@@ -183,16 +186,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun updateSongList(songList: ArrayList<Song>) {
-        musicService?.updateSongList(songList)
+    fun setSongsAndPlay(songList: ArrayList<Song>) {
+        musicService?.setSongs(songList)
+        musicService?.seekTo(0)
+        musicService?.setCurSong(songList[0].id, true)
+        setMiniPlayer(songList[0])
+        song = songList[0]
     }
 
-    fun setMiniPlayer(song: Song) {
+    private fun setMiniPlayer(song: Song) {
         binding.mainMiniplayerTitleTv.text = song.title
         binding.mainMiniplayerSingerTv.text = song.singer
         binding.mainPlayerSeekbar.progress = (song.second * 1000 / song.playTime) * 100
 
         setPlayerStatus(song.isPlaying)
+        Log.d("MainActivity", "setMiniPlayer: $song")
     }
 
     private fun setPlayerStatus(isPlaying: Boolean) {

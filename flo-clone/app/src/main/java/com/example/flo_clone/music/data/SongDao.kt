@@ -27,7 +27,7 @@ interface SongDao {
     fun getAll(): List<Song>
 
     @Query("SELECT * FROM Song WHERE id = :id")
-    fun getSong(id: Int): Song
+    fun getSongById(id: Int): Song
 
     @Query("SELECT * FROM Song WHERE albumId = :albumId")
     fun getSongsByAlbumId(albumId: Int): List<Song>
@@ -37,4 +37,7 @@ interface SongDao {
 
     @Query("SELECT * FROM Song WHERE isLike = :isLike")
     fun getLikedSongs(isLike: Boolean): List<Song>
+
+    @Query("UPDATE Song SET isPlaying = :isPlaying, second = :second")
+    fun initPlayingAndSecond(isPlaying: Boolean, second: Int)
 }
