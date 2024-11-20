@@ -1,9 +1,18 @@
 package com.example.flo_clone.model.song
 
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.example.flo_clone.model.album.Album
 
-@Entity
+@Entity(
+    foreignKeys = [ForeignKey(
+        entity = Album::class,
+        parentColumns = ["id"],
+        childColumns = ["albumId"],
+        onDelete = ForeignKey.CASCADE
+    )]
+)
 data class Song(
     var title: String = "",
     var singer: String = "",
@@ -13,5 +22,6 @@ data class Song(
     var music: String = "",
     var coverImg: Int? = null,
     var isLike: Boolean = false,
+    var albumId: Int = 0,
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 )

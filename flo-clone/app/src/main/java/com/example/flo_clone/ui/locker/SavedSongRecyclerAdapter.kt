@@ -9,15 +9,10 @@ import com.example.flo_clone.model.song.Song
 
 class SavedSongRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val songs = ArrayList<Song>()
+    private lateinit var listener: OnItemClickListener
 
     interface OnItemClickListener {
         fun onRemoveItem(songId: Int)
-    }
-
-    private lateinit var listener: OnItemClickListener
-
-    fun setOnItemClickListener(listener: OnItemClickListener) {
-        this.listener = listener
     }
 
     override fun getItemCount(): Int = songs.size
@@ -33,21 +28,26 @@ class SavedSongRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as SongViewHolder).bind(songs[position])
+
         holder.binding.songMoreIv.setOnClickListener {
             listener.onRemoveItem(songs[position].id)
             deleteItem(position)
         }
     }
 
-    private fun deleteItem(position: Int) {
-        songs.removeAt(position)
-        notifyItemRemoved(position)
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.listener = listener
     }
 
     fun addItems(newItems: ArrayList<Song>) {
         songs.clear()
         songs.addAll(newItems)
         notifyItemRangeChanged(0, newItems.size)
+    }
+
+    private fun deleteItem(position: Int) {
+        songs.removeAt(position)
+        notifyItemRemoved(position)
     }
 
     inner class SongViewHolder(
@@ -57,10 +57,6 @@ class SavedSongRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
             binding.songSingerTv.text = song.singer
             binding.songTitleTv.text = song.title
             binding.songAlbumIv.setImageResource(song.coverImg ?: R.drawable.img_album_butter)
-
-            binding.songMoreIv.setOnClickListener {
-                deleteItem(adapterPosition)
-            }
         }
     }
 }

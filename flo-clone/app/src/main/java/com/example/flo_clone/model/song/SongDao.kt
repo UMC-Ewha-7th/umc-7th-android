@@ -17,11 +17,20 @@ interface SongDao {
     @Delete
     fun delete(song: Song)
 
+    fun deleteAll() {
+        getAll().forEach {
+            delete(it)
+        }
+    }
+
     @Query("SELECT * FROM Song")
     fun getAll(): List<Song>
 
     @Query("SELECT * FROM Song WHERE id = :id")
     fun getSong(id: Int): Song
+
+    @Query("SELECT * FROM Song WHERE albumId = :albumId")
+    fun getSongsByAlbumId(albumId: Int): List<Song>
 
     @Query("UPDATE Song SET isLike = :isLike WHERE id = :id")
     fun updateLikeById(id: Int, isLike: Boolean)

@@ -182,6 +182,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun updateSongList(songList: ArrayList<Song>) {
+        musicService?.updateSongList(songList)
+    }
+
     fun setMiniPlayer(song: Song) {
         binding.mainMiniplayerTitleTv.text = song.title
         binding.mainMiniplayerSingerTv.text = song.singer

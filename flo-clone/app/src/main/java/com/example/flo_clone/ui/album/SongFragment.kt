@@ -15,7 +15,7 @@ class SongFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentSongBinding.inflate(inflater, container, false)
 
         binding.songLalacLayout.setOnClickListener {
