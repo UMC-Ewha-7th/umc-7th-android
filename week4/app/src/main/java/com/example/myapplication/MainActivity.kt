@@ -12,7 +12,7 @@ import com.example.myapplication.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-  
+
     var total = 0
     var started = false
 
@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity() {
         binding.buttonStop.setOnClickListener {
            stop()
         }
-
     }
 
 

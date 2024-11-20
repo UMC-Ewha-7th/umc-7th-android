@@ -24,6 +24,12 @@ class SongActivity : AppCompatActivity() {
         initSong()
         setPlayer(song)
 
+        binding.songRepeatIv.setOnClickListener{
+            timer.interrupt()
+            startTimer()
+
+        }
+
         binding.songDownIb.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             intent.putExtra("title", binding.songMusicTitleTv.text.toString())
