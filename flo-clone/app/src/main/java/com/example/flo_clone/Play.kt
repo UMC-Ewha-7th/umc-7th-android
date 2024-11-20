@@ -1,3 +1,7 @@
-package com.example.flo_clone.ui
+package com.example.flo_clone
 
-data class PlayList()
+data class Play(
+    val title: String = "",
+    val singer: String = "",
+    var coverImg: Int? = null,
+)

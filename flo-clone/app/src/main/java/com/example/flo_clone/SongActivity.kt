@@ -15,13 +15,20 @@ class SongActivity : AppCompatActivity() {
     lateinit var timer: Timer
     private var mediaPlayer: MediaPlayer? = null
     private var gson: Gson = Gson()
+
+    val songs = arrayListOf<Song>()
+    lateinit var songDB: SongDatabase
+    var nowPos = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivitySongBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        initPlayList()
         initSong()
+
         setPlayer(song)
 
         binding.songRepeatIv.setOnClickListener{
@@ -66,18 +73,21 @@ class SongActivity : AppCompatActivity() {
         mediaPlayer = null //
     }
 
-    private fun initSong() {
-        if (intent.hasExtra("title") && intent.hasExtra("singer")) {
-            song = Song(
-                intent.getStringExtra("title")!!,
-                intent.getStringExtra("singer")!!,
-                intent.getIntExtra("second", 0),
-                intent.getIntExtra("playTime", 0), intent.getBooleanExtra("isPlaying", false),
-                intent.getStringExtra("music")!!
+    private fun initPlayList(){
+        songDB = SongDatabase.getInstance(this)!!
+        songs.addAll(songDB.songDao().getSongs())
+    }
 
-            )
-        }
+    private fun initSong(){
+        val spf = getSharedPreferences("song", MODE_PRIVATE)
+        val songId = spf.getInt("songId",0)
+
+        nowPos = getPlayingSongPosition(songId)
+
+        Log.d("now Song ID",songs[nowPos].id.toString())
+
         startTimer()
+        setPlayer(songs[nowPos])
     }
 
     private fun setPlayer(song: Song) {
@@ -142,6 +152,15 @@ class SongActivity : AppCompatActivity() {
                 Log.d("Song", "스레드가 죽었습니다. ${e.message}")
             }
         }
+    }
+
+    private fun getPlayingSongPosition(songId: Int): Int{
+        for (i in 0 until songs.size){
+            if (songs[i].id == songId){
+                return i
+            }
+        }
+        return 0
     }
 }
 

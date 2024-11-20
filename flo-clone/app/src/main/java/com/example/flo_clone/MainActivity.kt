@@ -2,6 +2,7 @@ package com.example.flo_clone
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -15,8 +16,8 @@ import com.google.gson.Gson
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
-
-    private var song:Song = Song()
+    private var songList : List<Song> ?= null
+    private var song: Song = Song()
     private var gson: Gson = Gson()
 
     private val startForResult =
@@ -32,13 +33,20 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        inputDummySongs()
         initBottomNavigation()
 
+        binding.mainPlayerCl.setOnClickListener {
+            val editor = getSharedPreferences("song", MODE_PRIVATE).edit()
+            editor.putInt("songId",song.id)
+            editor.apply()
 
+            val intent = Intent(this,SongActivity::class.java)
+            startActivity(intent)
+        }
 
         // main_player_cl 눌렀을 때 SongActivity로 전환 리스너 설정
-        binding.mainPlayerCl.setOnClickListener {
+        /*binding.mainPlayerCl.setOnClickListener {
             val intent = Intent(this, SongActivity::class.java)
             intent.putExtra("title", song.title)
             intent.putExtra("singer", song.singer)
@@ -47,7 +55,39 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("isPlaying", song.isPlaying)
             intent.putExtra("music",song.music)
             startForResult.launch(intent)
+        }*/
+    }
+
+    override fun onStart(){
+        super.onStart()
+        /*val sharedPreferences = getSharedPreferences("song", MODE_PRIVATE)
+        val songJson = sharedPreferences.getString("songData",null)
+
+        song = if(songJson == null){
+            Song("라일락","아이유(IU)",0,60,false,"luxery")
+
+        }else{
+            gson.fromJson(songJson, Song::class.java)
         }
+
+        setMiniPlayer(song)*/
+
+        val spf = getSharedPreferences("song", MODE_PRIVATE)
+        val songId = spf.getInt("songId",0)
+
+        val songDB = SongDatabase.getInstance(this)!!
+
+        song = if (songId == 0){
+            songDB.songDao().getSong(1)
+        } else{
+            songDB.songDao().getSong(songId)
+        }
+
+        Log.d("song ID", song.id.toString())
+        setMiniPlayer(song)
+
+
+
     }
 
     private fun initBottomNavigation() {
@@ -97,22 +137,90 @@ class MainActivity : AppCompatActivity() {
         binding.mainMiniplayerSingerTv.text = song.singer
         binding.mainProgressSb.progress = (song.second*100000)/song.playTime
     }
+    private fun inputDummySongs(){
+        val songDB = SongDatabase.getInstance(this)!!
+        val songs = songDB.songDao().getSongs()
 
-    override fun onStart(){
-        super.onStart()
-        val sharedPreferences = getSharedPreferences("song", MODE_PRIVATE)
-        val songJson = sharedPreferences.getString("songData",null)
+        if(songs.isNotEmpty())return
 
-        song = if(songJson == null){
-            Song("라일락","아이유(IU)",0,60,false,"luxery")
+        songDB.songDao().insert(
+            Song("Butter" ,
+                "방탄소년단 (BTS)",
+                0,
+                240,
+                false,
+                "music_lilac",
+                R.drawable.img_album_exp2,
+                false)
 
-        }else{
-            gson.fromJson(songJson, Song::class.java)
-        }
+        )
 
-        setMiniPlayer(song)
+        songDB.songDao().insert(
+            Song("Butter" ,
+                "방탄소년단 (BTS)",
+                0,
+                240,
+                false,
+                "music_lilac",
+                R.drawable.img_album_exp2,
+                false)
+
+        )
+
+        songDB.songDao().insert(
+            Song("Butter" ,
+                "방탄소년단 (BTS)",
+                0,
+                240,
+                false,
+                "music_lilac",
+                R.drawable.img_album_exp2,
+                false)
+
+        )
+
+        songDB.songDao().insert(
+            Song("Butter" ,
+                "방탄소년단 (BTS)",
+                0,
+                240,
+                false,
+                "music_lilac",
+                R.drawable.img_album_exp2,
+                false)
+
+        )
+
+        songDB.songDao().insert(
+            Song("Butter" ,
+                "방탄소년단 (BTS)",
+                0,
+                240,
+                false,
+                "music_lilac",
+                R.drawable.img_album_exp2,
+                false)
+
+        )
+
+        songDB.songDao().insert(
+            Song("Butter" ,
+                "방탄소년단 (BTS)",
+                0,
+                240,
+                false,
+                "music_lilac",
+                R.drawable.img_album_exp2,
+                false)
+
+        )
+
+        val _songs = songDB.songDao().getSongs()
+        Log.d("DB data", _songs.toString())
+
+
+    }
 
 
 
     }
-}

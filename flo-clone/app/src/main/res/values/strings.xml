@@ -99,5 +99,7 @@
 
     <string name="locker_title_tv">보관함</string>
     <string name="saved_no_music_tv">저장한 곡이 없습니다.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

@@ -10,9 +10,11 @@ import com.example.flo_clone.R
 import com.example.flo_clone.databinding.FragmentAlbumBinding
 import com.example.flo_clone.ui.home.HomeFragment
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.gson.Gson
 
 class AlbumFragment : Fragment() {
     private lateinit var binding: FragmentAlbumBinding
+    private var gson: Gson = Gson()
 
     private val tabs = listOf("수록곡", "상세정보", "영상")
 
@@ -23,12 +25,16 @@ class AlbumFragment : Fragment() {
     ): View? {
         binding = FragmentAlbumBinding.inflate(inflater, container, false)
 
-        if (arguments != null && arguments?.getString("title") != null && arguments?.getString("singer") != null) {
+        val albumJson = arguments?.getString("album")
+        val album = gson.fromJson(albumJson,Album::class.java)
+        setInit(album)
+
+        /*if (arguments != null && arguments?.getString("title") != null && arguments?.getString("singer") != null) {
             val title = arguments!!.getString("title")
             val singer = arguments!!.getString("singer")
             binding.albumMusicTitleTv.text = title
             binding.albumSingerNameTv.text = singer
-        }
+        }*/
 
         binding.albumBackIv.setOnClickListener {
             (context as MainActivity)
@@ -39,10 +45,18 @@ class AlbumFragment : Fragment() {
         }
 
         binding.albumContentVp.adapter = AlbumViewPagerAdapter(this)
+
         TabLayoutMediator(binding.albumContentTb, binding.albumContentVp) { tab, position ->
             tab.text = tabs[position]
         }.attach()
 
         return binding.root
+    }
+
+    private fun setInit(album:Album){
+        binding.albumAlbumIv.setImageResource(album.coverImg!!)
+        binding.albumMusicTitleTv.text = album.title.toString()
+        binding.albumSingerNameTv.text = album.Singer.toString()
+
     }
 }

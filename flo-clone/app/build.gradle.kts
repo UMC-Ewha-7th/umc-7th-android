@@ -4,6 +4,12 @@ plugins {
 }
 
 android {
+
+    configurations.implementation {
+
+        exclude(group = "org.jetbrains", module = "annotations")
+         }
+
     namespace = "com.example.flo_clone"
     compileSdk = 34
 
@@ -49,9 +55,13 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
-    implementation("com.google.code.gson:gson:2.10.1")
     implementation(libs.androidx.navigation.ui.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation("com.google.code.gson:gson:2.10.1")
+
+    implementation("androidx.room:room-ktx:2.4.1")
+    implementation("androidx.room:room-runtime:2.4.1")
+    implementation("androidx.room:room-compiler:2.4.1")
 }
