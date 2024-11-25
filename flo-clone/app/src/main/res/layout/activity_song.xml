@@ -99,7 +99,7 @@
         android:layout_marginTop="20dp"
         android:contentDescription="@string/song_album_iv"
         android:scaleType="fitXY"
-        android:src="@drawable/img_album_exp2"
+        android:src="@drawable/img_album_lilac"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
@@ -208,7 +208,7 @@
             android:src="@drawable/btn_miniplayer_previous" />
 
         <ImageView
-            android:id="@+id/song_miniplayer_iv"
+            android:id="@+id/song_play_iv"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:contentDescription="@string/main_miniplayer_btn"
