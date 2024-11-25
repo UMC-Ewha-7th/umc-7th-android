@@ -22,8 +22,6 @@
         android:id="@+id/saved_list_cl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingStart="20dp"
-        android:paddingEnd="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,6 +31,7 @@
             android:id="@+id/saved_btn_select_all_iv"
             android:layout_width="12dp"
             android:layout_height="12dp"
+            android:layout_marginStart="20dp"
             android:contentDescription="@string/saved_btn_select_all_tv"
             android:src="@drawable/ic_check"
             app:layout_constraintBottom_toBottomOf="@+id/saved_btn_select_all_tv"
@@ -78,7 +77,7 @@
             android:id="@+id/saved_btn_edit_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="20dp"
             android:text="@string/saved_btn_edit_tv"
             app:layout_constraintBottom_toBottomOf="@+id/saved_btn_select_all_tv"
             app:layout_constraintEnd_toEndOf="parent"
@@ -95,5 +94,114 @@
             tools:listitem="@layout/item_song" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottom_sheet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/select_color"
+            android:paddingHorizontal="30dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="40dp"
+            app:behavior_draggable="false"
+            app:behavior_peekHeight="32dp"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+            <ImageView
+                android:id="@+id/sheet_play_iv"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:contentDescription="@string/editbar_play"
+                android:src="@drawable/btn_editbar_play"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/sheet_play_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/editbar_play"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="@+id/sheet_play_iv"
+                app:layout_constraintStart_toStartOf="@+id/sheet_play_iv"
+                app:layout_constraintTop_toBottomOf="@+id/sheet_play_iv" />
+
+            <ImageView
+                android:id="@+id/sheet_addPlaylist_iv"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:contentDescription="@string/editbar_addPlaylist"
+                android:src="@drawable/btn_editbar_addplaylist"
+                app:layout_constraintBottom_toBottomOf="@+id/sheet_play_iv"
+                app:layout_constraintEnd_toStartOf="@+id/sheet_myList_iv"
+                app:layout_constraintStart_toEndOf="@+id/sheet_play_iv"
+                app:layout_constraintTop_toTopOf="@+id/sheet_play_iv" />
+
+            <TextView
+                android:id="@+id/sheet_addPlaylist_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/editbar_addPlaylist"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="@+id/sheet_addPlaylist_iv"
+                app:layout_constraintStart_toStartOf="@+id/sheet_addPlaylist_iv"
+                app:layout_constraintTop_toBottomOf="@+id/sheet_addPlaylist_iv" />
+
+            <ImageView
+                android:id="@+id/sheet_myList_iv"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:contentDescription="@string/editbar_myList"
+                android:src="@drawable/btn_editbar_mylist"
+                app:layout_constraintBottom_toBottomOf="@+id/sheet_addPlaylist_iv"
+                app:layout_constraintEnd_toStartOf="@+id/sheet_delete_iv"
+                app:layout_constraintStart_toEndOf="@+id/sheet_addPlaylist_iv"
+                app:layout_constraintTop_toTopOf="@+id/sheet_addPlaylist_iv" />
+
+            <TextView
+                android:id="@+id/sheet_myList_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/editbar_myList"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="@+id/sheet_myList_iv"
+                app:layout_constraintStart_toStartOf="@+id/sheet_myList_iv"
+                app:layout_constraintTop_toBottomOf="@+id/sheet_myList_iv" />
+
+            <ImageView
+                android:id="@+id/sheet_delete_iv"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:contentDescription="@string/editbar_delete"
+                android:src="@drawable/btn_editbar_delete"
+                app:layout_constraintBottom_toBottomOf="@+id/sheet_myList_iv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/sheet_myList_iv" />
+
+            <TextView
+                android:id="@+id/sheet_delete_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/editbar_delete"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="@+id/sheet_delete_iv"
+                app:layout_constraintStart_toStartOf="@+id/sheet_delete_iv"
+                app:layout_constraintTop_toBottomOf="@+id/sheet_delete_iv" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
