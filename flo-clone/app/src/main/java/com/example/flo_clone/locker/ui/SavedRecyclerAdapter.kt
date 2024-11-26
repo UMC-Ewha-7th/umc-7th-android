@@ -11,15 +11,15 @@ import com.example.flo_clone.music.data.Song
 class SavedRecyclerAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val items = ArrayList<T>()
     private val selectedItems = ArrayList<T>()
-    private lateinit var listener: OnItemClickListener<T>
+    private lateinit var listener: OnItemActionListener<T>
 
     companion object {
         private const val TYPE_SONG = 0
         private const val TYPE_ALBUM = 1
     }
 
-    interface OnItemClickListener<T> {
-        fun onRemoveItem(item: T)
+    interface OnItemActionListener<T> {
+        fun onItemRemoved(item: T)
         fun onItemClicked(item: T)
         fun isItemSelected(item: T): Boolean
     }
@@ -56,7 +56,7 @@ class SavedRecyclerAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
         }
     }
 
-    fun setOnItemClickListener(listener: OnItemClickListener<T>) {
+    fun setOnItemClickListener(listener: OnItemActionListener<T>) {
         this.listener = listener
     }
 
@@ -96,7 +96,7 @@ class SavedRecyclerAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
 
     fun deleteSelectedItems() {
         selectedItems.forEach {
-            listener.onRemoveItem(it)
+            listener.onItemRemoved(it)
         }
         items.removeAll(selectedItems.toSet())
         selectedItems.clear()
@@ -114,7 +114,7 @@ class SavedRecyclerAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
             parent,
             false
         )
-        return SavedSongViewHolder(binding, listener as OnItemClickListener<Song>)
+        return SavedSongViewHolder(binding, listener as OnItemActionListener<Song>)
     }
 
     private fun createAlbumViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
@@ -123,6 +123,6 @@ class SavedRecyclerAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
             parent,
             false
         )
-        return SavedAlbumViewHolder(binding, listener as OnItemClickListener<Album>)
+        return SavedAlbumViewHolder(binding, listener as OnItemActionListener<Album>)
     }
 }

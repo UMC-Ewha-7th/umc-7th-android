@@ -8,7 +8,7 @@ import com.example.flo_clone.databinding.ItemSavedAlbumBinding
 
 class SavedAlbumViewHolder(
     private val binding: ItemSavedAlbumBinding,
-    private val listener: SavedRecyclerAdapter.OnItemClickListener<Album>
+    private val listener: SavedRecyclerAdapter.OnItemActionListener<Album>
 ) : RecyclerView.ViewHolder(
     binding.root
 ) {
@@ -17,18 +17,24 @@ class SavedAlbumViewHolder(
         binding.savedAlbumSingerTv.text = album.singer
         binding.savedAlbumImgIv.setImageResource(album.coverImg)
 
-        binding.savedAlbumMoreIv.setOnClickListener {
-            listener.onRemoveItem(album)
-        }
-
         binding.savedAlbumItemCl.setOnClickListener {
             listener.onItemClicked(album)
         }
 
         if (listener.isItemSelected(album)) {
-            binding.root.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.light_gray))
+            binding.root.setBackgroundColor(
+                ContextCompat.getColor(
+                    binding.root.context,
+                    R.color.light_gray
+                )
+            )
         } else {
-            binding.root.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.white))
+            binding.root.setBackgroundColor(
+                ContextCompat.getColor(
+                    binding.root.context,
+                    R.color.white
+                )
+            )
         }
     }
 }

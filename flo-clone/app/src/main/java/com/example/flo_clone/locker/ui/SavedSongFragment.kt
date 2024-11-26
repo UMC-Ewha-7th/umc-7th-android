@@ -1,11 +1,11 @@
 package com.example.flo_clone.locker.ui
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.flo_clone.MainActivity
@@ -35,10 +35,8 @@ class SavedSongFragment : Fragment() {
 
         if (userId == 0) {
             binding.savedListCl.visibility = View.GONE
-            binding.savedNoMusicTv.visibility = View.VISIBLE
             binding.savedNoMusicTv.text = "로그인 후 이용해주세요."
-        } else {
-            setupRecyclerView()
+            binding.savedNoMusicTv.visibility = View.VISIBLE
         }
 
         changeSelectStatus(false)
@@ -56,43 +54,28 @@ class SavedSongFragment : Fragment() {
         binding.sheetDeleteIv.setOnClickListener {
             savedAdapter.deleteSelectedItems()
             changeSelectStatus(false)
+
+            if (savedAdapter.itemCount == 0) {
+                setNoMusicView()
+            }
         }
 
         return binding.root
     }
 
-    private fun changeSelectStatus(isSelected: Boolean) {
-        val bottomBehavior = BottomSheetBehavior.from(binding.bottomSheet)
-
-        if (isSelected) {
-            binding.savedBtnSelectAllTv.text = getString(R.string.saved_btn_deselct_all_tv)
-            binding.savedBtnSelectAllIv.setColorFilter(Color.parseColor("#3F3FFF"))
-            binding.savedBtnSelectAllTv.setTextColor(Color.parseColor("#3F3FFF"))
-
-            (activity as MainActivity).showBottomSheet(true)
-            binding.bottomSheet.visibility = View.VISIBLE
-            bottomBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-        } else {
-            binding.savedBtnSelectAllTv.text = getString(R.string.saved_btn_select_all_tv)
-            binding.savedBtnSelectAllIv.setColorFilter(Color.parseColor("#000000"))
-            binding.savedBtnSelectAllTv.setTextColor(Color.parseColor("#000000"))
-
-            bottomBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-            binding.bottomSheet.visibility = View.GONE
-            (activity as MainActivity).showBottomSheet(false)
+    override fun onStart() {
+        super.onStart()
+        if (userId != 0) {
+            setupRecyclerView()
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        savedAdapter.addItems(songRepository.getLikedSongs(true) as ArrayList<Song>)
     }
 
     private fun setupRecyclerView() {
         binding.savedRv.layoutManager = LinearLayoutManager(context)
 
-        savedAdapter.setOnItemClickListener(object : SavedRecyclerAdapter.OnItemClickListener<Song> {
-            override fun onRemoveItem(item: Song) {
+        savedAdapter.setOnItemClickListener(object :
+            SavedRecyclerAdapter.OnItemActionListener<Song> {
+            override fun onItemRemoved(item: Song) {
                 songRepository.updateLikeById(item.id, false)
                 savedAdapter.deleteItem(item)
             }
@@ -111,13 +94,47 @@ class SavedSongFragment : Fragment() {
         val songList = songRepository.getLikedSongs(true) as ArrayList<Song>
 
         if (songList.isEmpty()) {
-            binding.savedListCl.visibility = View.GONE
-            binding.savedNoMusicTv.text = "저장된 곡이 없습니다."
-            binding.savedNoMusicTv.visibility = View.VISIBLE
+            setNoMusicView()
         } else {
             binding.savedListCl.visibility = View.VISIBLE
             binding.savedNoMusicTv.visibility = View.GONE
             savedAdapter.addItems(songList)
         }
+    }
+
+    private fun changeSelectStatus(isSelected: Boolean) {
+        val bottomBehavior = BottomSheetBehavior.from(binding.bottomSheet)
+
+        if (isSelected) {
+            binding.savedBtnSelectAllTv.text = getString(R.string.saved_btn_deselct_all_tv)
+            binding.savedBtnSelectAllIv.setColorFilter(
+                ContextCompat.getColor(binding.root.context, R.color.select_color)
+            )
+            binding.savedBtnSelectAllTv.setTextColor(
+                ContextCompat.getColor(binding.root.context, R.color.select_color)
+            )
+
+            (activity as MainActivity).showBottomSheet(true)
+            binding.bottomSheet.visibility = View.VISIBLE
+            bottomBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        } else {
+            binding.savedBtnSelectAllTv.text = getString(R.string.saved_btn_select_all_tv)
+            binding.savedBtnSelectAllIv.setColorFilter(
+                ContextCompat.getColor(binding.root.context, R.color.black)
+            )
+            binding.savedBtnSelectAllTv.setTextColor(
+                ContextCompat.getColor(binding.root.context, R.color.black)
+            )
+
+            bottomBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            binding.bottomSheet.visibility = View.GONE
+            (activity as MainActivity).showBottomSheet(false)
+        }
+    }
+
+    private fun setNoMusicView() {
+        binding.savedListCl.visibility = View.GONE
+        binding.savedNoMusicTv.text = "저장된 곡이 없습니다."
+        binding.savedNoMusicTv.visibility = View.VISIBLE
     }
 }
