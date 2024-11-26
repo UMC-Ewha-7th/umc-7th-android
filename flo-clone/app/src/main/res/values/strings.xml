@@ -133,5 +133,6 @@
     <string name="line_divider">|</string>
     <string name="login_find_pw">비밀번호 찾기</string>
     <string name="login_signup">회원가입</string>
+    <string name="album_info">2021.03.25 | 정규 | 댄스 팝</string>
 
 </resources>

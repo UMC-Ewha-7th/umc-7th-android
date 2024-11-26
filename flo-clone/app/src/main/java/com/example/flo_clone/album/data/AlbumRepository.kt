@@ -16,6 +16,10 @@ class AlbumRepository(context: Context) {
         return albumDao.getAllAlbums()
     }
 
+    fun getLikedAlbums(userId: Int): List<Album> {
+        return albumDao.getLikedAlbums(userId)
+    }
+
     fun isLikedAlbum(userId: Int, albumId: Int): Boolean {
         return albumDao.isLikedAlbum(userId, albumId)
     }
@@ -25,7 +29,7 @@ class AlbumRepository(context: Context) {
     }
 
     fun deleteLikeAlbum(userId: Int, albumId: Int) {
-        albumDao.deleteLikeAlbum(AlbumLike(userId, albumId))
+        albumDao.deleteLikeAlbum(userId, albumId)
     }
 
     fun inputDummyAlbums() {

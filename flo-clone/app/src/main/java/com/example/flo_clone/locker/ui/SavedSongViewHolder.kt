@@ -27,7 +27,7 @@ class SavedSongViewHolder(
         if (listener.isItemSelected(song)) {
             binding.root.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.light_gray))
         } else {
-            binding.root.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.light_gray))
+            binding.root.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.white))
         }
     }
 }

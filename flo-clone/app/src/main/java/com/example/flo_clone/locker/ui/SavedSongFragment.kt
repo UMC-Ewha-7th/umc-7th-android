@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.flo_clone.MainActivity
@@ -18,6 +19,7 @@ class SavedSongFragment : Fragment() {
     private lateinit var binding: FragmentSavedBinding
     private lateinit var savedAdapter: SavedRecyclerAdapter<Song>
     private lateinit var songRepository: SongRepository
+    private var userId: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,9 +27,20 @@ class SavedSongFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSavedBinding.inflate(inflater, container, false)
-        songRepository = SongRepository(requireContext())
+        val spf = requireContext().getSharedPreferences("user", MODE_PRIVATE)
+        userId = spf.getInt("userIdx", 0)
 
-        setupRecyclerView()
+        songRepository = SongRepository(requireContext())
+        savedAdapter = SavedRecyclerAdapter()
+
+        if (userId == 0) {
+            binding.savedListCl.visibility = View.GONE
+            binding.savedNoMusicTv.visibility = View.VISIBLE
+            binding.savedNoMusicTv.text = "로그인 후 이용해주세요."
+        } else {
+            setupRecyclerView()
+        }
+
         changeSelectStatus(false)
 
         binding.savedBtnSelectAllTv.setOnClickListener {
@@ -76,7 +89,6 @@ class SavedSongFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        savedAdapter = SavedRecyclerAdapter()
         binding.savedRv.layoutManager = LinearLayoutManager(context)
 
         savedAdapter.setOnItemClickListener(object : SavedRecyclerAdapter.OnItemClickListener<Song> {
@@ -96,6 +108,16 @@ class SavedSongFragment : Fragment() {
         })
         binding.savedRv.adapter = savedAdapter
 
-        savedAdapter.addItems(songRepository.getLikedSongs(true) as ArrayList<Song>)
+        val songList = songRepository.getLikedSongs(true) as ArrayList<Song>
+
+        if (songList.isEmpty()) {
+            binding.savedListCl.visibility = View.GONE
+            binding.savedNoMusicTv.text = "저장된 곡이 없습니다."
+            binding.savedNoMusicTv.visibility = View.VISIBLE
+        } else {
+            binding.savedListCl.visibility = View.VISIBLE
+            binding.savedNoMusicTv.visibility = View.GONE
+            savedAdapter.addItems(songList)
+        }
     }
 }
