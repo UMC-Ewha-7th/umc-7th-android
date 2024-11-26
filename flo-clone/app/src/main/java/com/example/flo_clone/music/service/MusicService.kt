@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
+import com.example.flo_clone.album.data.AlbumRepository
 import com.example.flo_clone.music.controller.MediaPlayerController
 import com.example.flo_clone.music.controller.MediaPlayerControllerImpl
 import com.example.flo_clone.music.data.Song
@@ -15,6 +16,7 @@ import com.example.flo_clone.music.timer.TimerManagerImpl
 class MusicService : Service() {
     private val binder = MusicServiceBinder()
     private lateinit var mediaController: MediaPlayerController
+    private lateinit var albumRepository: AlbumRepository
     private lateinit var songRepository: SongRepository
     private var timerManager: TimerManager? = null
     private var songs = mutableListOf<Song>()
@@ -29,9 +31,11 @@ class MusicService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+        albumRepository = AlbumRepository(this)
         songRepository = SongRepository(this)
         mediaController = MediaPlayerControllerImpl(this)
 
+        albumRepository.inputDummyAlbums()
         songRepository.inputDummySongs()
         songs = songRepository.getAllSongs().toMutableList()
         if (songs.isNotEmpty()) initMediaPlayer(songs[nowPos])

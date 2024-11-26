@@ -8,16 +8,18 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.flo_clone.MainActivity
 import com.example.flo_clone.R
-import com.example.flo_clone.databinding.FragmentHomeBinding
 import com.example.flo_clone.album.data.Album
-import com.example.flo_clone.music.data.Song
-import com.example.flo_clone.music.data.SongDatabase
+import com.example.flo_clone.album.data.AlbumRepository
 import com.example.flo_clone.album.ui.AlbumFragment
+import com.example.flo_clone.databinding.FragmentHomeBinding
+import com.example.flo_clone.music.data.Song
+import com.example.flo_clone.music.data.SongRepository
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var albumRvAdapter: TodayAlbumRecyclerAdapter
-    private lateinit var songDB: SongDatabase
+    private lateinit var albumRepository: AlbumRepository
+    private lateinit var songRepository: SongRepository
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,7 +27,8 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        songDB = SongDatabase.getInstance(requireContext())!!
+        albumRepository = AlbumRepository(requireContext())
+        songRepository = SongRepository(requireContext())
 
         setupRecyclerView()
 
@@ -40,14 +43,15 @@ class HomeFragment : Fragment() {
 
     private fun setupRecyclerView() {
         albumRvAdapter = TodayAlbumRecyclerAdapter()
-        binding.homeTodayMusicTotalRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.homeTodayMusicTotalRv.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         albumRvAdapter.setOnItemClickListener(object :
             TodayAlbumRecyclerAdapter.OnItemClickListener {
             override fun albumPlayClickListener(album: Album) {
-                val songs = songDB.songDao().getSongsByAlbumId(album.id)
+                val songs = songRepository.getSongsByAlbumId(album.id)
 
-                if(songs.isEmpty()) return
+                if (songs.isEmpty()) return
                 (context as MainActivity).setSongsAndPlay(songs as ArrayList<Song>)
             }
 
@@ -65,6 +69,6 @@ class HomeFragment : Fragment() {
         })
         binding.homeTodayMusicTotalRv.adapter = albumRvAdapter
 
-        albumRvAdapter.addItems(songDB.albumDao().getAll() as ArrayList<Album>)
+        albumRvAdapter.addItems(albumRepository.getAllAlbums() as ArrayList<Album>)
     }
 }
