@@ -128,4 +128,10 @@
     <string name="signup_validate_email">올바른 이메일 형식으로 입력해주세요.</string>
     <string name="signup_validate_email_exist">이미 가입된 이메일 주소입니다.</string>
 
+    <string name="login_finish">로그인</string>
+    <string name="login_find_id">아이디 찾기</string>
+    <string name="line_divider">|</string>
+    <string name="login_find_pw">비밀번호 찾기</string>
+    <string name="login_signup">회원가입</string>
+
 </resources>

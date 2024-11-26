@@ -20,9 +20,10 @@
     <EditText
         android:id="@+id/signup_id_et"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/light_gray"
         android:hint="@string/signup_id_hint"
         android:importantForAutofill="no"
         android:inputType="textEmailSubject"
@@ -45,8 +46,9 @@
     <AutoCompleteTextView
         android:id="@+id/signup_email_domain_tv"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginEnd="10dp"
+        android:backgroundTint="@color/light_gray"
         android:hint="@string/signup_email_domain_hint"
         android:importantForAutofill="no"
         android:inputType="textEmailAddress"
@@ -59,13 +61,13 @@
     <EditText
         android:id="@+id/signup_password_et"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/light_gray"
         android:hint="@string/signup_pw_hint"
         android:importantForAutofill="no"
         android:inputType="textPassword"
-        android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/signup_id_et" />
@@ -73,13 +75,13 @@
     <EditText
         android:id="@+id/signup_password_check_et"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/light_gray"
         android:hint="@string/signup_pw_check_hint"
         android:importantForAutofill="no"
         android:inputType="textPassword"
-        android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/signup_password_et" />
@@ -94,7 +96,6 @@
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/signup_password_check_et"
         app:layout_constraintTop_toBottomOf="@+id/signup_password_check_et" />
-
 
     <Button
         android:id="@+id/signup_finish_btn"

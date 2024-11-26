@@ -1,6 +1,5 @@
 package com.example.flo_clone.user.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -29,10 +28,8 @@ class SignupActivity : AppCompatActivity() {
 
         binding.signupFinishBtn.setOnClickListener {
             if (validateEmail() && validatePassword()) {
-                // TODO: 회원가입 성공 -> 회원 정보 저장 후 로그인 화면으로 이동
                 signup()
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
+                finish()
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.example.flo_clone.home.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.example.flo_clone.album.ui.AlbumFragment
 import com.example.flo_clone.databinding.FragmentHomeBinding
 import com.example.flo_clone.music.data.Song
 import com.example.flo_clone.music.data.SongRepository
+import com.example.flo_clone.user.ui.LoginActivity
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
@@ -30,6 +32,8 @@ class HomeFragment : Fragment() {
         albumRepository = AlbumRepository(requireContext())
         songRepository = SongRepository(requireContext())
 
+        albumRepository.inputDummyAlbums()
+
         setupRecyclerView()
 
         // 배너 ViewPager 어댑터 적용
@@ -37,6 +41,11 @@ class HomeFragment : Fragment() {
         bannerAdapter.addFragment(BannerFragment(R.drawable.img_home_viewpager_exp))
         bannerAdapter.addFragment(BannerFragment(R.drawable.img_home_viewpager_exp2))
         binding.homeBannerVp.adapter = bannerAdapter
+
+        binding.homePanelBtnSettingIv.setOnClickListener {
+            val intent = Intent(context, LoginActivity::class.java)
+            startActivity(intent)
+        }
 
         return binding.root
     }
