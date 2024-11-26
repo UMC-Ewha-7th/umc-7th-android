@@ -3,81 +3,45 @@ package com.example.flo_clone.music.data
 import android.content.Context
 import android.util.Log
 import com.example.flo_clone.R
-import com.example.flo_clone.album.data.Album
+import com.example.flo_clone.common.FloDatabase
 
 class SongRepository(context: Context) {
-    private val songDB: SongDatabase = SongDatabase.getInstance(context)!!
+    private val songDao: SongDao = FloDatabase.getInstance(context)!!.songDao()
 
     fun getAllSongs(): List<Song> {
-        return songDB.songDao().getAll()
+        return songDao.getAll()
     }
 
-    fun updateSong(song: Song)  {
-        songDB.songDao().update(song)
+    fun updateSong(song: Song) {
+        songDao.update(song)
     }
 
     fun initPlayingAndSecond() {
-        songDB.songDao().initPlayingAndSecond(false, 0)
+        songDao.initPlayingAndSecond(false, 0)
     }
 
     fun getSongById(id: Int): Song {
-        return songDB.songDao().getSongById(id)
+        return songDao.getSongById(id)
+    }
+
+    fun getSongsByAlbumId(albumId: Int): List<Song> {
+        return songDao.getSongsByAlbumId(albumId)
+    }
+
+    fun updateLikeById(id: Int, isLike: Boolean) {
+        songDao.updateLikeById(id, isLike)
+    }
+
+    fun getLikedSongs(isLike: Boolean): List<Song> {
+        return songDao.getLikedSongs(isLike)
     }
 
     fun inputDummySongs() {
-        val songs: List<Song> = songDB.songDao().getAll()
+        val songs: List<Song> = songDao.getAll()
 
         if (songs.isNotEmpty()) return
 
-        songDB.albumDao().insert(
-            Album(
-                "ONCE",
-                "유다빈밴드",
-                R.drawable.img_album_once
-            )
-        )
-
-        songDB.albumDao().insert(
-            Album(
-                "LETTER",
-                "유다빈밴드",
-                R.drawable.img_album_letter
-            )
-        )
-
-        songDB.albumDao().insert(
-            Album(
-                "항해",
-                "유다빈밴드",
-                R.drawable.img_album_voyage
-            )
-        )
-
-        songDB.albumDao().insert(
-            Album(
-                "IU 5th Album 'LILAC'",
-                "아이유 (IU)",
-                R.drawable.img_album_lilac
-            )
-        )
-
-        songDB.albumDao().insert(
-            Album(
-                "치얼업 (Original Soundtrack Part.5)",
-                "유다빈밴드",
-                R.drawable.img_album_cheerup_ost
-            )
-        )
-
-        songDB.albumDao().insert(
-            Album(
-                "Butter (feat. Megan Thee Stallion)",
-                "BTS (방탄소년단)",
-                R.drawable.img_album_butter
-            )
-        )
-
-        songDB.songDao().insert(
+        songDao.insert(
             Song(
                 "Calling",
                 "유다빈밴드",
@@ -91,7 +55,7 @@ class SongRepository(context: Context) {
             )
         )
 
-        songDB.songDao().insert(
+        songDao.insert(
             Song(
                 "ONCE",
                 "유다빈밴드",
@@ -105,7 +69,7 @@ class SongRepository(context: Context) {
             )
         )
 
-        songDB.songDao().insert(
+        songDao.insert(
             Song(
                 "땅",
                 "유다빈밴드",
@@ -119,7 +83,7 @@ class SongRepository(context: Context) {
             )
         )
 
-        songDB.songDao().insert(
+        songDao.insert(
             Song(
                 "LETTER",
                 "유다빈밴드",
@@ -133,7 +97,7 @@ class SongRepository(context: Context) {
             )
         )
 
-        songDB.songDao().insert(
+        songDao.insert(
             Song(
                 "항해",
                 "유다빈밴드",
@@ -147,7 +111,7 @@ class SongRepository(context: Context) {
             )
         )
 
-        songDB.songDao().insert(
+        songDao.insert(
             Song(
                 "LILAC (라일락)",
                 "아이유 (IU)",
@@ -161,7 +125,7 @@ class SongRepository(context: Context) {
             )
         )
 
-        songDB.songDao().insert(
+        songDao.insert(
             Song(
                 "오늘이야 (Good Day)",
                 "유다빈밴드",
@@ -175,7 +139,7 @@ class SongRepository(context: Context) {
             )
         )
 
-        songDB.songDao().insert(
+        songDao.insert(
             Song(
                 "오늘이야 (Good Day) (Inst.ver)",
                 "유다빈밴드",
@@ -189,10 +153,7 @@ class SongRepository(context: Context) {
             )
         )
 
-        val _songs = songDB.songDao().getAll()
+        val _songs = getAllSongs()
         Log.d("DB data", _songs.toString())
-
-        val _albums = songDB.albumDao().getAll()
-        Log.d("DB data", _albums.toString())
     }
 }

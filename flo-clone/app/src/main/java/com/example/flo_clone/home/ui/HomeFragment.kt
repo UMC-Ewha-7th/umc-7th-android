@@ -1,5 +1,6 @@
 package com.example.flo_clone.home.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,16 +9,19 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.flo_clone.MainActivity
 import com.example.flo_clone.R
-import com.example.flo_clone.databinding.FragmentHomeBinding
 import com.example.flo_clone.album.data.Album
-import com.example.flo_clone.music.data.Song
-import com.example.flo_clone.music.data.SongDatabase
+import com.example.flo_clone.album.data.AlbumRepository
 import com.example.flo_clone.album.ui.AlbumFragment
+import com.example.flo_clone.databinding.FragmentHomeBinding
+import com.example.flo_clone.music.data.Song
+import com.example.flo_clone.music.data.SongRepository
+import com.example.flo_clone.user.ui.LoginActivity
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var albumRvAdapter: TodayAlbumRecyclerAdapter
-    private lateinit var songDB: SongDatabase
+    private lateinit var albumRepository: AlbumRepository
+    private lateinit var songRepository: SongRepository
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,7 +29,10 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        songDB = SongDatabase.getInstance(requireContext())!!
+        albumRepository = AlbumRepository(requireContext())
+        songRepository = SongRepository(requireContext())
+
+        albumRepository.inputDummyAlbums()
 
         setupRecyclerView()
 
@@ -35,19 +42,25 @@ class HomeFragment : Fragment() {
         bannerAdapter.addFragment(BannerFragment(R.drawable.img_home_viewpager_exp2))
         binding.homeBannerVp.adapter = bannerAdapter
 
+        binding.homePanelBtnSettingIv.setOnClickListener {
+            val intent = Intent(context, LoginActivity::class.java)
+            startActivity(intent)
+        }
+
         return binding.root
     }
 
     private fun setupRecyclerView() {
         albumRvAdapter = TodayAlbumRecyclerAdapter()
-        binding.homeTodayMusicTotalRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.homeTodayMusicTotalRv.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         albumRvAdapter.setOnItemClickListener(object :
             TodayAlbumRecyclerAdapter.OnItemClickListener {
             override fun albumPlayClickListener(album: Album) {
-                val songs = songDB.songDao().getSongsByAlbumId(album.id)
+                val songs = songRepository.getSongsByAlbumId(album.id)
 
-                if(songs.isEmpty()) return
+                if (songs.isEmpty()) return
                 (context as MainActivity).setSongsAndPlay(songs as ArrayList<Song>)
             }
 
@@ -65,6 +78,6 @@ class HomeFragment : Fragment() {
         })
         binding.homeTodayMusicTotalRv.adapter = albumRvAdapter
 
-        albumRvAdapter.addItems(songDB.albumDao().getAll() as ArrayList<Album>)
+        albumRvAdapter.addItems(albumRepository.getAllAlbums() as ArrayList<Album>)
     }
 }

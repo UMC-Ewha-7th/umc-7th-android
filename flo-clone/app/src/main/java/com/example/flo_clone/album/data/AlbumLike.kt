@@ -4,10 +4,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class Album(
-    val title: String = "",
-    val singer: String = "",
-    val coverImg: Int = 0
+data class AlbumLike(
+    val userId: Int,
+    val albumId: Int
 ) {
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 }
