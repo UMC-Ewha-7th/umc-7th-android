@@ -20,7 +20,6 @@ import com.example.flo_clone.music.data.Song
 import com.example.flo_clone.music.service.MusicService
 import com.example.flo_clone.music.ui.SongActivity
 import com.example.flo_clone.search.ui.SearchFragment
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

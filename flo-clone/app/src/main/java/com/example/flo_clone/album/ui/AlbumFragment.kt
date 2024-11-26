@@ -9,13 +9,13 @@ import com.example.flo_clone.MainActivity
 import com.example.flo_clone.R
 import com.example.flo_clone.databinding.FragmentAlbumBinding
 import com.example.flo_clone.album.data.Album
-import com.example.flo_clone.music.data.SongDatabase
+import com.example.flo_clone.common.FloDatabase
 import com.example.flo_clone.home.ui.HomeFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
 class AlbumFragment : Fragment() {
     private lateinit var binding: FragmentAlbumBinding
-    private lateinit var songDB: SongDatabase
+    private lateinit var songDB: FloDatabase
     private var album: Album? = null
 
     private val tabs = listOf("수록곡", "상세정보", "영상")
@@ -26,7 +26,7 @@ class AlbumFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAlbumBinding.inflate(inflater, container, false)
-        songDB = SongDatabase.getInstance(requireContext())!!
+        songDB = FloDatabase.getInstance(requireContext())!!
 
         if (arguments != null && arguments?.getInt("albumId") != null) {
             val albumId = requireArguments().getInt("albumId")

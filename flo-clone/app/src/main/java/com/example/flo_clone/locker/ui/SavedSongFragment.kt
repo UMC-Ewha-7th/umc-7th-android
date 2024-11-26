@@ -11,13 +11,13 @@ import com.example.flo_clone.MainActivity
 import com.example.flo_clone.R
 import com.example.flo_clone.databinding.FragmentSavedBinding
 import com.example.flo_clone.music.data.Song
-import com.example.flo_clone.music.data.SongDatabase
+import com.example.flo_clone.music.data.SongRepository
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 class SavedSongFragment : Fragment() {
     private lateinit var binding: FragmentSavedBinding
     private lateinit var savedAdapter: SavedSongRecyclerAdapter
-    private lateinit var songDB: SongDatabase
+    private lateinit var songRepository: SongRepository
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,7 +25,7 @@ class SavedSongFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSavedBinding.inflate(inflater, container, false)
-        songDB = SongDatabase.getInstance(requireContext())!!
+        songRepository = SongRepository(requireContext())
 
         setupRecyclerView()
         changeSelectStatus(false)
@@ -72,7 +72,7 @@ class SavedSongFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        savedAdapter.addItems(songDB.songDao().getLikedSongs(true) as ArrayList<Song>)
+        savedAdapter.addItems(songRepository.getLikedSongs(true) as ArrayList<Song>)
     }
 
     private fun setupRecyclerView() {
@@ -81,7 +81,7 @@ class SavedSongFragment : Fragment() {
 
         savedAdapter.setOnItemClickListener(object : SavedSongRecyclerAdapter.OnItemClickListener {
             override fun onRemoveItem(songId: Int) {
-                songDB.songDao().updateLikeById(songId, false)
+                songRepository.updateLikeById(songId, false)
             }
 
             override fun onItemClicked(isSelected: Boolean) {
@@ -90,6 +90,6 @@ class SavedSongFragment : Fragment() {
         })
         binding.savedRv.adapter = savedAdapter
 
-        savedAdapter.addItems(songDB.songDao().getLikedSongs(true) as ArrayList<Song>)
+        savedAdapter.addItems(songRepository.getLikedSongs(true) as ArrayList<Song>)
     }
 }

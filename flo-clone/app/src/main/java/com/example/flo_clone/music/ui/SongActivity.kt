@@ -17,7 +17,7 @@ import com.example.flo_clone.R
 import com.example.flo_clone.databinding.ActivitySongBinding
 import com.example.flo_clone.databinding.SnackbarCustomBinding
 import com.example.flo_clone.music.data.Song
-import com.example.flo_clone.music.data.SongDatabase
+import com.example.flo_clone.common.FloDatabase
 import com.example.flo_clone.music.service.MusicService
 import com.google.android.material.snackbar.Snackbar
 import java.util.Locale
@@ -180,7 +180,7 @@ class SongActivity : AppCompatActivity() {
         }
 
         Thread {
-            val songDB = SongDatabase.getInstance(this)!!
+            val songDB = FloDatabase.getInstance(this)!!
             songDB.songDao().updateLikeById(song.id, song.isLike)
         }.start()
     }
