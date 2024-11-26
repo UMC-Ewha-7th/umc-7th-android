@@ -16,7 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 class SavedSongFragment : Fragment() {
     private lateinit var binding: FragmentSavedBinding
-    private lateinit var savedAdapter: SavedSongRecyclerAdapter
+    private lateinit var savedAdapter: SavedRecyclerAdapter<Song>
     private lateinit var songRepository: SongRepository
 
     override fun onCreateView(
@@ -76,16 +76,22 @@ class SavedSongFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        savedAdapter = SavedSongRecyclerAdapter()
+        savedAdapter = SavedRecyclerAdapter()
         binding.savedRv.layoutManager = LinearLayoutManager(context)
 
-        savedAdapter.setOnItemClickListener(object : SavedSongRecyclerAdapter.OnItemClickListener {
-            override fun onRemoveItem(songId: Int) {
-                songRepository.updateLikeById(songId, false)
+        savedAdapter.setOnItemClickListener(object : SavedRecyclerAdapter.OnItemClickListener<Song> {
+            override fun onRemoveItem(item: Song) {
+                songRepository.updateLikeById(item.id, false)
+                savedAdapter.deleteItem(item)
             }
 
-            override fun onItemClicked(isSelected: Boolean) {
-                changeSelectStatus(isSelected)
+            override fun onItemClicked(item: Song) {
+                savedAdapter.selectItem(item)
+                changeSelectStatus(savedAdapter.isSelectedItemNotEmpty())
+            }
+
+            override fun isItemSelected(item: Song): Boolean {
+                return savedAdapter.isItemSelected(item)
             }
         })
         binding.savedRv.adapter = savedAdapter
