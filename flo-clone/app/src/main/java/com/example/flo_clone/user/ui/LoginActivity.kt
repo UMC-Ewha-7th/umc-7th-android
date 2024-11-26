@@ -20,6 +20,11 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         userRepository = UserRepository(this)
 
+        if (checkLogin()) {
+            Toast.makeText(this, "로그인 완료.", Toast.LENGTH_SHORT).show()
+            finish()
+        }
+
         setContentView(binding.root)
 
         binding.loginCloseIb.setOnClickListener {
@@ -70,6 +75,13 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, SignupActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun checkLogin(): Boolean {
+        val spf = getSharedPreferences("user", MODE_PRIVATE)
+        val idx = spf.getInt("userIdx", 0)
+
+        return idx != 0
     }
 
     private fun checkAllFields(): Boolean {

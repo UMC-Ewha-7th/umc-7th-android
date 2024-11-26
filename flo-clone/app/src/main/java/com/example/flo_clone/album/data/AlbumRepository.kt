@@ -8,16 +8,32 @@ import com.example.flo_clone.common.FloDatabase
 class AlbumRepository(context: Context) {
     private val albumDao = FloDatabase.getInstance(context)!!.albumDao()
 
+    fun getAlbumById(id: Int): Album {
+        return albumDao.getAlbumById(id)
+    }
+
     fun getAllAlbums(): List<Album> {
-        return albumDao.getAll()
+        return albumDao.getAllAlbums()
+    }
+
+    fun isLikedAlbum(userId: Int, albumId: Int): Boolean {
+        return albumDao.isLikedAlbum(userId, albumId)
+    }
+
+    fun insertLikeAlbum(userId: Int, albumId: Int) {
+        albumDao.insertLikeAlbum(AlbumLike(userId, albumId))
+    }
+
+    fun deleteLikeAlbum(userId: Int, albumId: Int) {
+        albumDao.deleteLikeAlbum(AlbumLike(userId, albumId))
     }
 
     fun inputDummyAlbums() {
-        val albums: List<Album> = albumDao.getAll()
+        val albums: List<Album> = albumDao.getAllAlbums()
 
         if (albums.isNotEmpty()) return
 
-        albumDao.insert(
+        albumDao.insertAlbum(
             Album(
                 "ONCE",
                 "유다빈밴드",
@@ -25,7 +41,7 @@ class AlbumRepository(context: Context) {
             )
         )
 
-        albumDao.insert(
+        albumDao.insertAlbum(
             Album(
                 "LETTER",
                 "유다빈밴드",
@@ -33,7 +49,7 @@ class AlbumRepository(context: Context) {
             )
         )
 
-        albumDao.insert(
+        albumDao.insertAlbum(
             Album(
                 "항해",
                 "유다빈밴드",
@@ -41,7 +57,7 @@ class AlbumRepository(context: Context) {
             )
         )
 
-        albumDao.insert(
+        albumDao.insertAlbum(
             Album(
                 "IU 5th Album 'LILAC'",
                 "아이유 (IU)",
@@ -49,7 +65,7 @@ class AlbumRepository(context: Context) {
             )
         )
 
-        albumDao.insert(
+        albumDao.insertAlbum(
             Album(
                 "치얼업 (Original Soundtrack Part.5)",
                 "유다빈밴드",
@@ -57,7 +73,7 @@ class AlbumRepository(context: Context) {
             )
         )
 
-        albumDao.insert(
+        albumDao.insertAlbum(
             Album(
                 "Butter (feat. Megan Thee Stallion)",
                 "BTS (방탄소년단)",

@@ -9,5 +9,5 @@ data class Album(
     val singer: String = "",
     val coverImg: Int = 0
 ) {
-    @PrimaryKey(autoGenerate = true) val id: Int = 0
+    @PrimaryKey(autoGenerate = true) var id: Int = 0
 }

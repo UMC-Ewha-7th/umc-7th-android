@@ -8,5 +8,5 @@ data class User(
     val email: String,
     var password: String
 ) {
-    @PrimaryKey(autoGenerate = true) val id: Int = 0
+    @PrimaryKey(autoGenerate = true) var id: Int = 0
 }
