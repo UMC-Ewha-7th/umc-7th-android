@@ -20,6 +20,13 @@ class LockerAlbumRVAdapter (private val albumList: ArrayList<Album>) : RecyclerV
 
     override fun onBindViewHolder(holder: LockerAlbumRVAdapter.ViewHolder, position: Int) {
         holder.bind(albumList[position])
+        holder.itemView.setOnClickListener{
+            MyItemClickListner.onItemClick(albumList[position])
+        }
+
+        holder.binding.itemLockerAlbumMoreIv.setOnClickListener{
+            MyItemClickListner.onRemoveAlbum(position)
+        }
         
     }
 

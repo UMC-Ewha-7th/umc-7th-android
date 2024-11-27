@@ -4,7 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
+import androidx.media3.common.util.Log
+import androidx.media3.common.util.UnstableApi
 import com.example.flo_clone.databinding.ActivityMainBinding
 import com.example.flo_clone.ui.home.HomeFragment
 import com.example.flo_clone.ui.locker.LockerFragment
@@ -32,19 +35,19 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        inputDummySongs()
+
         initBottomNavigation()
 
 
         // main_player_cl 눌렀을 때 SongActivity로 전환 리스너 설정
         binding.mainPlayerCl.setOnClickListener {
+            val editor = getSharedPreferences("song", MODE_PRIVATE).edit()
+            editor.putInt("songId", song.id)
+            editor.apply()
+
             val intent = Intent(this, SongActivity::class.java)
-            intent.putExtra("title", song.title)
-            intent.putExtra("singer", song.singer)
-            intent.putExtra("second", song.second)
-            intent.putExtra("playTime", song.playTime)
-            intent.putExtra("isPlaying", song.isPlaying)
-            intent.putExtra("music", song.music)
-            startForResult.launch(intent)
+            startActivity(intent)
         }
     }
 
@@ -94,18 +97,80 @@ class MainActivity : AppCompatActivity() {
         binding.mainProgressSb.progress = (song.second*100000)/song.playTime
     }
 
+    @OptIn(UnstableApi::class)
     override fun onStart() {
         super.onStart()
-        val sharedPreferences = getSharedPreferences("song", MODE_PRIVATE)
-        val songJson = sharedPreferences.getString("songData", null)
+//        val sharedPreferences = getSharedPreferences("song", MODE_PRIVATE)
+//        val songJson = sharedPreferences.getString("songData", null)
+//
+//        song = if(songJson == null) {
+//            Song("Mango Sundive", "Unknown", 0, 60, false, "mango_sundive")
+//        } else {
+//            gson.fromJson(songJson, Song::class.java)
+//        }
 
-        song = if(songJson == null) {
-            Song("Mango Sundive", "Unknown", 0, 60, false, "mango_sundive")
+        val spf = getSharedPreferences("song", MODE_PRIVATE)
+        val songId = spf.getInt("songId", 0)
+
+        val songDB = SongDatabase.getInstance(this)!!
+
+        song = if (songId == 0) {
+            songDB.songDao().getSongs(1)
         } else {
-            gson.fromJson(songJson, Song::class.java)
+            songDB.songDao().getSongs(songId)
         }
 
+        Log.d("song ID", song.id.toString())
         setMiniPlayer(song)
+
+
+    }
+
+    @OptIn(UnstableApi::class)
+    private fun inputDummySongs() {
+        val songDB = SongDatabase.getInstance(this)
+        val songs = songDB?.songDao()?.getSongs()
+
+        if (songs?.isNotEmpty() == true) return
+
+        songDB?.songDao()?.insert(
+            Song(
+                "Butter",
+                "방탄소년단",
+                0,
+                235,
+                false,
+                "mango_sundive",
+                R.drawable.img_album_exp2
+            )
+        )
+
+        songDB?.songDao()?.insert(
+            Song(
+                "Lilac",
+                "아이유 (IU)",
+                0,
+                235,
+                false,
+                "laststop",
+                R.drawable.img_album_exp2
+            )
+        )
+
+        songDB?.songDao()?.insert(
+            Song(
+                "Next Level",
+                "에스파 (AESPA)",
+                0,
+                235,
+                false,
+                "slowlife",
+                R.drawable.img_album_exp2
+            )
+        )
+
+        val _songs = songDB?.songDao()?.getSongs()
+        Log.d("DB data", _songs.toString())
 
 
     }
