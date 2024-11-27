@@ -69,8 +69,6 @@ class SongActivity : AppCompatActivity() {
         }
     }
 
-
-
     private fun initSong() {
         val spf = getSharedPreferences("song", MODE_PRIVATE)
         val songId = spf.getInt("songId", 0)
