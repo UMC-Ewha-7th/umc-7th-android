@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -17,7 +18,7 @@ import com.example.flo_clone.R
 import com.example.flo_clone.databinding.ActivitySongBinding
 import com.example.flo_clone.databinding.SnackbarCustomBinding
 import com.example.flo_clone.music.data.Song
-import com.example.flo_clone.common.FloDatabase
+import com.example.flo_clone.utils.FloDatabase
 import com.example.flo_clone.music.service.MusicService
 import com.google.android.material.snackbar.Snackbar
 import java.util.Locale
@@ -160,7 +161,7 @@ class SongActivity : AppCompatActivity() {
                 snackbarText.text = getString(message)
             }
 
-            val snackBarLayout = snackBar.view as Snackbar.SnackbarLayout
+            val snackBarLayout = snackBar.view as ViewGroup
             with(snackBarLayout) {
                 removeAllViews()
                 setPadding(0, 0, 0, 30)

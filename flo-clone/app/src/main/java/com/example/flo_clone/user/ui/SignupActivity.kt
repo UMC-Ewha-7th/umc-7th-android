@@ -3,13 +3,18 @@ package com.example.flo_clone.user.ui
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.flo_clone.R
 import com.example.flo_clone.databinding.ActivitySignupBinding
-import com.example.flo_clone.user.data.User
+import com.example.flo_clone.user.data.JoinRequestDTO
+import com.example.flo_clone.user.data.JoinSuccessDTO
 import com.example.flo_clone.user.data.UserRepository
+import com.example.flo_clone.user.service.AuthService
+import com.example.flo_clone.user.service.SignupView
+import com.example.flo_clone.utils.BaseResponse
 
-class SignupActivity : AppCompatActivity() {
+class SignupActivity : AppCompatActivity(), SignupView {
     private lateinit var binding: ActivitySignupBinding
     private lateinit var userRepository: UserRepository
     private val emailDomains = arrayOf("naver.com", "gmail.com", "hanmail.net", "nate.com")
@@ -27,85 +32,92 @@ class SignupActivity : AppCompatActivity() {
         binding.signupEmailDomainTv.setAdapter(adapter)
 
         binding.signupFinishBtn.setOnClickListener {
-            if (validateEmail() && validatePassword()) {
-                signup()
-                finish()
-            }
+            signup()
         }
     }
 
-    private fun validateEmail(): Boolean {
-        val email = binding.signupIdEt.text.toString()
-        val emailDomain = binding.signupEmailDomainTv.text.toString()
+    private fun validateName(name: String): Boolean {
+        if (name.isEmpty()) {
+            setErrorMsg(resources.getString(R.string.signup_validate_name_empty))
+            return false
+        }
 
+        binding.signupValidateTv.visibility = View.GONE
+        return true
+    }
+
+    private fun validateEmail(email: String, emailDomain: String): Boolean {
         if (email.isEmpty()) {
-            binding.signupValidateTv.text = resources.getString(R.string.signup_validate_id_empty)
-            binding.signupValidateTv.visibility = View.VISIBLE
+            setErrorMsg(resources.getString(R.string.signup_validate_id_empty))
             return false
         }
 
         if (emailDomain.isEmpty()) {
-            binding.signupValidateTv.text =
-                resources.getString(R.string.signup_validate_email_empty)
-            binding.signupValidateTv.visibility = View.VISIBLE
+            setErrorMsg(resources.getString(R.string.signup_validate_email_empty))
             return false
         }
 
         if (!emailDomain.contains('.')) {
-            binding.signupValidateTv.text = resources.getString(R.string.signup_validate_email)
-            binding.signupValidateTv.visibility = View.VISIBLE
-            return false
-        }
-
-        val emailFull = "$email@$emailDomain"
-        val user = userRepository.getUserByEmail(emailFull)
-
-        if (user != null) {
-            binding.signupValidateTv.text =
-                resources.getString(R.string.signup_validate_email_exist)
-            binding.signupValidateTv.visibility = View.VISIBLE
+            setErrorMsg(resources.getString(R.string.signup_validate_email))
             return false
         }
 
         binding.signupValidateTv.visibility = View.GONE
-
         return true
     }
 
-    private fun validatePassword(): Boolean {
-        val password = binding.signupPasswordEt.text.toString()
-        val passwordCheck = binding.signupPasswordCheckEt.text.toString()
-
+    private fun validatePassword(password: String, passwordCheck: String): Boolean {
         if (password.isEmpty()) {
-            binding.signupValidateTv.text = resources.getString(R.string.signup_validate_pw_empty)
-            binding.signupValidateTv.visibility = View.VISIBLE
+            setErrorMsg(resources.getString(R.string.signup_validate_pw_empty))
             return false
         }
 
         if (passwordCheck.isEmpty()) {
-            binding.signupValidateTv.text =
-                resources.getString(R.string.signup_validate_pw_check_empty)
-            binding.signupValidateTv.visibility = View.VISIBLE
+            setErrorMsg(resources.getString(R.string.signup_validate_pw_check_empty))
             return false
         }
 
         if (password != passwordCheck) {
-            binding.signupValidateTv.text = resources.getString(R.string.signup_validate_pw)
-            binding.signupValidateTv.visibility = View.VISIBLE
+            setErrorMsg(resources.getString(R.string.signup_validate_pw))
             return false
         }
 
         binding.signupValidateTv.visibility = View.GONE
-
         return true
     }
 
     private fun signup() {
-        val email =
-            binding.signupIdEt.text.toString() + "@" + binding.signupEmailDomainTv.text.toString()
-        val password = binding.signupPasswordEt.text.toString()
+        val name = binding.signupNameEt.text.toString()
 
-        val user = User(email, password)
-        userRepository.insert(user)
+        val email = binding.signupIdEt.text.toString()
+        val emailDomain = binding.signupEmailDomainTv.text.toString()
+
+        val password = binding.signupPasswordEt.text.toString()
+        val passwordCheck = binding.signupPasswordCheckEt.text.toString()
+
+        if (!validateName(name)) return
+        if (!validateEmail(email, emailDomain)) return
+        if (!validatePassword(password, passwordCheck)) return
+
+        val emailFull = "$email@$emailDomain"
+        val user = JoinRequestDTO(name, emailFull, password)
+
+        val authService = AuthService()
+        authService.setSignupView(this)
+        authService.signup(user)
+    }
+
+    private fun setErrorMsg(message: String) {
+        binding.signupValidateTv.text = message
+        binding.signupValidateTv.visibility = View.VISIBLE
+    }
+
+    override fun onSignupSuccess(response: JoinSuccessDTO) {
+        Toast.makeText(this, "회원가입 성공!", Toast.LENGTH_SHORT).show()
+        finish()
+    }
+
+    override fun onSignupFailure(response: BaseResponse) {
+        setErrorMsg(response.message)
     }
 }

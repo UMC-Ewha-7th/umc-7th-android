@@ -8,10 +8,14 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.flo_clone.databinding.ActivityLoginBinding
-import com.example.flo_clone.user.data.User
+import com.example.flo_clone.user.data.LoginRequestDTO
+import com.example.flo_clone.user.data.LoginSuccessDTO
 import com.example.flo_clone.user.data.UserRepository
+import com.example.flo_clone.user.service.AuthService
+import com.example.flo_clone.user.service.LoginView
+import com.example.flo_clone.utils.BaseResponse
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(), LoginView {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var userRepository: UserRepository
 
@@ -95,30 +99,29 @@ class LoginActivity : AppCompatActivity() {
         return false
     }
 
-    private fun validatePassword(user: User, password: String): Boolean {
-        if (user.password != password) {
-            return false
-        }
-
-        return true
-    }
-
     private fun login() {
         val email = "${binding.loginIdEt.text}@${binding.loginEmailDomainTv.text}"
         val password = binding.loginPasswordEt.text.toString()
-        val user = userRepository.getUserByEmail(email)
+        val user = LoginRequestDTO(email, password)
 
-        if (user != null && validatePassword(user, password)) {
-            val spf = getSharedPreferences("user", MODE_PRIVATE)
-            val editor = spf.edit()
-            editor.putInt("userIdx", user.id)
-            editor.apply()
+        val authService = AuthService()
+        authService.setLoginView(this)
+        authService.login(user)
+    }
 
-            val idx = spf.getInt("userIdx", 0)
-            Log.d("LoginActivity", "login user id: $idx")
-            finish()
-        } else {
-            Toast.makeText(this, "아이디 또는 패스워드가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
-        }
+    override fun onLoginSuccess(response: LoginSuccessDTO) {
+        val spf = getSharedPreferences("user", MODE_PRIVATE)
+        val editor = spf.edit()
+        editor.putString("accessToken", response.accessToken)
+        editor.putInt("userIdx", response.memberId)
+        editor.apply()
+
+        val token = spf.getString("accessToken", "")
+        Log.d("LoginActivity", "login user token: $token")
+        finish()
+    }
+
+    override fun onLoginFailure(response: BaseResponse) {
+        Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
     }
 }

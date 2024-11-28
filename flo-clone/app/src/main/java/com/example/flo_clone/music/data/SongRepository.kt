@@ -3,7 +3,7 @@ package com.example.flo_clone.music.data
 import android.content.Context
 import android.util.Log
 import com.example.flo_clone.R
-import com.example.flo_clone.common.FloDatabase
+import com.example.flo_clone.utils.FloDatabase
 
 class SongRepository(context: Context) {
     private val songDao: SongDao = FloDatabase.getInstance(context)!!.songDao()
