@@ -1,7 +1,7 @@
 package com.example.flo_clone.user.data
 
 import android.content.Context
-import com.example.flo_clone.common.FloDatabase
+import com.example.flo_clone.utils.FloDatabase
 
 class UserRepository(context: Context) {
     private val userDao = FloDatabase.getInstance(context)!!.userDao()

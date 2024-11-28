@@ -18,6 +18,20 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:id="@+id/signup_name_et"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/light_gray"
+        android:hint="@string/signup_name_hint"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signup_title_tv" />
+
+    <EditText
         android:id="@+id/signup_id_et"
         android:layout_width="0dp"
         android:layout_height="50dp"
@@ -28,7 +42,7 @@
         android:importantForAutofill="no"
         android:inputType="textEmailSubject"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signup_title_tv"
+        app:layout_constraintTop_toBottomOf="@+id/signup_name_et"
         app:layout_constraintWidth_percent="0.45" />
 
     <TextView

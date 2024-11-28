@@ -1,4 +1,4 @@
-package com.example.flo_clone.common
+package com.example.flo_clone.utils
 
 import android.content.Context
 import androidx.room.Database

@@ -77,5 +77,5 @@ dependencies {
 
     // Glide
     implementation(libs.glide)
-    implementation(libs.glide.compiler)
+    ksp(libs.glide.compiler)
 }
