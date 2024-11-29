@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         inputDummySongs()
-
+        inputDummyAlbums()
         initBottomNavigation()
 
 
@@ -171,6 +171,45 @@ class MainActivity : AppCompatActivity() {
 
         val _songs = songDB?.songDao()?.getSongs()
         Log.d("DB data", _songs.toString())
+
+
+    }
+
+    private fun inputDummyAlbums() {
+        val songDB = SongDatabase.getInstance(this)
+        val albums = songDB?.albumDao()?.getAlbums()
+
+        if (albums?.isNotEmpty() == true) return
+
+        songDB?.albumDao()?.insert(
+            Album(
+                0,
+                "Butter",
+                "방탄소년단 (BTS)",
+                R.drawable.img_album_exp2
+            )
+        )
+
+        songDB?.albumDao()?.insert(
+            Album(
+                1,
+                "IU 5th Album 'LILAC",
+                "아이유 (IU)",
+                R.drawable.img_album_exp2
+            )
+        )
+
+        songDB?.albumDao()?.insert(
+            Album(
+                2,
+                "iScreaM Vol.10 : Next Level Remixes",
+                "에스파 (AESPA)",
+                R.drawable.img_album_exp2
+            )
+        )
+
+        val _songs = songDB?.songDao()?.getSongs()
+
 
 
     }

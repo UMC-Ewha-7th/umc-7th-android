@@ -1,8 +1,12 @@
 package com.example.flo_clone
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "AlbumTable")
 class Album (
+    @PrimaryKey(autoGenerate = false) var id: Int = 0,
     var title: String? = "",
     var singer: String? ="",
-    var coverImg: Int? = null,
-    var songs: ArrayList<Song>? = null //수록곡 의미, 강의에서는 사용하지 않음
+    var coverImg: Int? = null
 )

@@ -11,6 +11,7 @@ import com.example.flo_clone.Album
 import com.example.flo_clone.ui.album.AlbumRVAdapter
 import com.example.flo_clone.MainActivity
 import com.example.flo_clone.R
+import com.example.flo_clone.SongDatabase
 import com.example.flo_clone.databinding.FragmentHomeBinding
 import com.example.flo_clone.ui.album.AlbumFragment
 import com.google.gson.Gson
@@ -19,6 +20,8 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private var albumDatas = ArrayList<Album>()
+
+    private lateinit var songDB : SongDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,14 +43,9 @@ class HomeFragment : Fragment() {
 //                .commitAllowingStateLoss()
 //        }
 
-        albumDatas.apply {
-            add(Album("Butter", "방탄소년단 (BTS)", R.drawable.img_album_exp))
-            add(Album("Lilac", "아이유 (IU)", R.drawable.img_album_exp2))
-            add(Album("Next Level", "에스파 (AESPA)", R.drawable.img_album_exp))
-            add(Album("Boy with Luv", "방탄소년단 (BTS)", R.drawable.img_album_exp))
-            add(Album("BBoom BBoom", "모모랜드 (MOMOLAND)", R.drawable.img_album_exp))
-            add(Album("Weekend", "태연 (Tae Yeon)", R.drawable.img_album_exp))
-        }
+        songDB = SongDatabase.getInstance(requireContext())!!
+        albumDatas.addAll(songDB.albumDao().getAlbums())
+
 
         val albumRVAdapter = AlbumRVAdapter(albumDatas)
         binding.homeTodayMusicAlbumRv.adapter = albumRVAdapter
