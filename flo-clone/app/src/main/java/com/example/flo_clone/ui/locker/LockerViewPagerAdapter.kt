@@ -8,7 +8,7 @@ class LockerViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> SavedFragment()
+            0 -> SavedSongFragment()
             1 -> MusicFileFragment()
             else -> throw IllegalArgumentException("Invalid position")
         }
