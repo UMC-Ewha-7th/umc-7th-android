@@ -10,8 +10,7 @@ import com.example.flo_clone.Album
 import com.example.flo_clone.Like
 import com.example.flo_clone.MainActivity
 import com.example.flo_clone.R
-import com.example.flo_clone.Song
-import com.example.flo_clone.SongDatabase
+import com.example.flo.SongDatabase
 import com.example.flo_clone.databinding.FragmentAlbumBinding
 import com.example.flo_clone.ui.home.HomeFragment
 import com.google.android.material.tabs.TabLayoutMediator

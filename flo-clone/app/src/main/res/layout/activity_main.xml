@@ -22,7 +22,6 @@
         android:id="@+id/main_player_cl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/player_bg"
         android:paddingVertical="5dp"
         app:layout_constraintBottom_toTopOf="@id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"

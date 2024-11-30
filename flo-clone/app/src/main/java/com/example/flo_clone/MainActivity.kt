@@ -8,6 +8,7 @@ import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
+import com.example.flo.SongDatabase
 import com.example.flo_clone.databinding.ActivityMainBinding
 import com.example.flo_clone.ui.home.HomeFragment
 import com.example.flo_clone.ui.locker.LockerFragment
@@ -40,7 +41,6 @@ class MainActivity : AppCompatActivity() {
         initBottomNavigation()
 
 
-        // main_player_cl 눌렀을 때 SongActivity로 전환 리스너 설정
         binding.mainPlayerCl.setOnClickListener {
             val editor = getSharedPreferences("song", MODE_PRIVATE).edit()
             editor.putInt("songId", song.id)
@@ -49,6 +49,11 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, SongActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun getJwt(): String? {
+        val spf = this.getSharedPreferences("auth2", AppCompatActivity.MODE_PRIVATE)
+        return spf!!.getString("accessToken","")
     }
 
     private fun initBottomNavigation() {

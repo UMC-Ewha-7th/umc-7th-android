@@ -57,4 +57,17 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.runtime)
     kapt(libs.androidx.room.compiler)
+
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation (libs.adapter.rxjava2)
+
+
+    implementation (libs.glide)
+    annotationProcessor (libs.compiler)
+
+
+    implementation (libs.okhttp)
+    implementation (libs.logging.interceptor)
+
 }

@@ -11,7 +11,7 @@ import com.example.flo_clone.Album
 import com.example.flo_clone.ui.album.AlbumRVAdapter
 import com.example.flo_clone.MainActivity
 import com.example.flo_clone.R
-import com.example.flo_clone.SongDatabase
+import com.example.flo.SongDatabase
 import com.example.flo_clone.databinding.FragmentHomeBinding
 import com.example.flo_clone.ui.album.AlbumFragment
 import com.google.gson.Gson
